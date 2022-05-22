@@ -6,3 +6,9 @@ export const Container = styled.aside`
   overflow-y: auto;
   background: ${({ theme }) => theme.light.colors.background};
 `;
+
+export const SearchArea = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
