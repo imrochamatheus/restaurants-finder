@@ -1,11 +1,11 @@
-import GoogleMap from "./components/GoogleMap";
+import Map from "./components/Map";
 import Home from "./pages/Home";
 
 function App() {
   return (
     <div style={{ display: "flex" }}>
       <Home />
-      <GoogleMap />
+      <Map />
     </div>
   );
 }
