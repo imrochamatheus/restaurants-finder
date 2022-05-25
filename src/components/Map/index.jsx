@@ -1,5 +1,7 @@
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useMap } from "../../Providers/MapProvider";
+import { usePlaces } from "../../Providers/PlacesProvider";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 const container = {
   width: "400px",
@@ -7,35 +9,34 @@ const container = {
 };
 
 const Map = () => {
-  const [userPosition, setUserPosition] = useState(null);
-  const [map, setMap] = useState(null);
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      setUserPosition({ lat: coords.latitude, lng: coords.longitude });
-    });
-  }, []);
+  const { places, setPlaces, searchByNear } = usePlaces();
+  const { userPosition, isLoaded, loadError } = useMap();
 
   const onLoad = useCallback(
-    function callback(map) {
+    (map) => {
       const bounds = new window.google.maps.LatLngBounds(userPosition);
-
       map.fitBounds(bounds);
-      setMap(map);
+      searchByNear(map, userPosition);
     },
-    [userPosition]
+    [userPosition, searchByNear]
   );
-
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: "google-map-script",
-    language: "pt-BR",
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-  });
 
   return !loadError ? (
     isLoaded ? (
       userPosition && (
-        <GoogleMap mapContainerStyle={container} onLoad={onLoad}></GoogleMap>
+        <GoogleMap mapContainerStyle={container} onLoad={onLoad}>
+          <Marker position={userPosition} />
+          {places &&
+            places.map((place) => (
+              <Marker
+                key={place.place_id}
+                position={{
+                  lat: place.geometry.location.lat(),
+                  lng: place.geometry.location.lng(),
+                }}
+              />
+            ))}
+        </GoogleMap>
       )
     ) : (
       <h4>Loader...</h4>
