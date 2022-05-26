@@ -2,7 +2,8 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
-import Window from "../Window";
+
+import userMarker from "../../assets/img/logo.png";
 
 const mapContainer = {
   width: "400px",
@@ -10,7 +11,7 @@ const mapContainer = {
 };
 
 const MapContainer = (props) => {
-  const { map, markers, setGoogle, searchByNear } = useMap();
+  const { google, map, markers, setGoogle, searchByNear } = useMap();
 
   const [clickedMarker, setClickedMarker] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
@@ -35,6 +36,12 @@ const MapContainer = (props) => {
       containerStyle={mapContainer}
       centerAroundCurrentLocation
     >
+      {map && (
+        <Marker
+          position={{ lat: map.center.lat(), lng: map.center.lng() }}
+          icon={{ url: userMarker, size: google.maps.Size(10, 10) }}
+        />
+      )}
       {markers &&
         markers.map((marker, i) => (
           <Marker
