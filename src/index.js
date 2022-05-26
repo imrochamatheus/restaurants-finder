@@ -10,12 +10,12 @@ import MapProvider from "./Providers/MapProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
+  //<React.StrictMode>
   <MapProvider>
     <Reset />
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
   </MapProvider>
-  // </React.StrictMode>
+  //</React.StrictMode>
 );

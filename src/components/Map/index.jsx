@@ -1,14 +1,12 @@
-import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
+import { useState } from "react";
 import { useEffect } from "react";
 
 import { useMap } from "../../Providers/MapProvider";
 
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-};
 const MapContainer = (props) => {
-  const { markers, setGoogle, searchByNear } = useMap();
+  const { map, markers, setGoogle, searchByNear } = useMap();
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     setGoogle(props.google);
@@ -16,16 +14,37 @@ const MapContainer = (props) => {
 
   return (
     <Map
-      google={props.google}
       zoom={18}
-      centerAroundCurrentLocation
-      containerStyle={containerStyle}
+      google={props.google}
       onReady={searchByNear}
+      onRecenter={searchByNear}
+      centerAroundCurrentLocation
     >
-      <Marker position={{ lat: -12.9944885, lng: -38.49691069999999 }} />
       {markers &&
         markers.map((marker, i) => (
-          <Marker key={i} position={marker.position} title={marker.name} />
+          <Marker
+            key={i}
+            position={marker.position}
+            title={marker.name}
+            onClick={() => setSelected(true)}
+          >
+            {selected && (
+              <InfoWindow
+                position={marker.position}
+                onClose={() => setSelected(false)}
+              >
+                <div>
+                  <h2>
+                    <span role="img" aria-label="bear">
+                      🐻
+                    </span>{" "}
+                    Alert
+                  </h2>
+                  <p>Foda-se. Texto aleatório</p>
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
         ))}
     </Map>
   );

@@ -8,11 +8,16 @@ import TextField, { HelperText, Input } from "@material/react-text-field";
 
 import { Container } from "./styles";
 import { SearchArea } from "./styles";
+import { useMap } from "../Providers/MapProvider";
 
 import logo from "../assets/img/logo.png";
 
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
+  const { searchByText } = useMap();
+  const handleClick = () => {
+    searchByText(inputValue);
+  };
 
   return (
     <Container>
@@ -31,6 +36,7 @@ const Home = () => {
             onChange={({ target }) => setInputValue(target.value)}
           />
         </TextField>
+        <button onClick={handleClick}>Pesquisar</button>
       </SearchArea>
     </Container>
   );

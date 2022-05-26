@@ -8,6 +8,21 @@ const MapProvider = ({ children }) => {
   const [google, setGoogle] = useState(null);
   const [map, setMap] = useState(null);
 
+  const createMarkers = useCallback((places) => {
+    return setMarkers(
+      places.map((place) => {
+        return {
+          name: place.name,
+          position: {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          },
+          place,
+        };
+      })
+    );
+  }, []);
+
   const searchByNear = useCallback(
     (_, map) => {
       const service = new google.maps.places.PlacesService(map);
@@ -19,20 +34,30 @@ const MapProvider = ({ children }) => {
 
       service.nearbySearch(parameters, (response, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          setMarkers(
-            response.map((place) => ({
-              name: place.name,
-              position: {
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-              },
-              place,
-            }))
-          );
+          createMarkers(response);
+        }
+      });
+      setMap(map);
+    },
+    [google, createMarkers]
+  );
+
+  const searchByText = useCallback(
+    (query) => {
+      const service = new google.maps.places.PlacesService(map);
+      const parameters = {
+        query,
+        location: map.center,
+        type: ["restaurant"],
+      };
+
+      service.textSearch(parameters, (response, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          createMarkers(response);
         }
       });
     },
-    [google]
+    [google, map, createMarkers]
   );
 
   return (
@@ -44,6 +69,7 @@ const MapProvider = ({ children }) => {
         markers,
         setMarkers,
         setGoogle,
+        searchByText,
         searchByNear,
       }}
     >
