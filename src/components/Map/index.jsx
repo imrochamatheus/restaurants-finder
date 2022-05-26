@@ -1,33 +1,33 @@
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react";
+import { useEffect } from "react";
+
+import { useMap } from "../../Providers/MapProvider";
+
 const containerStyle = {
   width: "400px",
   height: "400px",
 };
 const MapContainer = (props) => {
-  const { google } = props;
+  const { markers, setGoogle, searchByNear } = useMap();
 
-  const handleOnMapReady = (_, map) => {
-    const service = new google.maps.places.PlacesService(map);
-
-    const req = {
-      location: map.center,
-      radius: 500,
-      query: "sorvete",
-    };
-
-    service.textSearch(req, (res, status) => {
-      console.log(res);
-    });
-  };
+  useEffect(() => {
+    setGoogle(props.google);
+  }, [setGoogle, props.google]);
 
   return (
     <Map
-      google={google}
+      google={props.google}
       zoom={18}
       centerAroundCurrentLocation
       containerStyle={containerStyle}
-      onReady={handleOnMapReady}
-    ></Map>
+      onReady={searchByNear}
+    >
+      <Marker position={{ lat: -12.9944885, lng: -38.49691069999999 }} />
+      {markers &&
+        markers.map((marker, i) => (
+          <Marker key={i} position={marker.position} title={marker.name} />
+        ))}
+    </Map>
   );
 };
 
