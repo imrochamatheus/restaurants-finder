@@ -1,49 +1,37 @@
-import { useCallback, useState } from "react";
-import { useMap } from "../../Providers/MapProvider";
-import { usePlaces } from "../../Providers/PlacesProvider";
-import { GoogleMap, Marker } from "@react-google-maps/api";
-
-const container = {
+import { Map, GoogleApiWrapper } from "google-maps-react";
+const containerStyle = {
   width: "400px",
   height: "400px",
 };
+const MapContainer = (props) => {
+  const { google } = props;
 
-const Map = () => {
-  const { places, setPlaces, searchByNear } = usePlaces();
-  const { userPosition, isLoaded, loadError } = useMap();
+  const handleOnMapReady = (_, map) => {
+    const service = new google.maps.places.PlacesService(map);
 
-  const onLoad = useCallback(
-    (map) => {
-      const bounds = new window.google.maps.LatLngBounds(userPosition);
-      map.fitBounds(bounds);
-      searchByNear(map, userPosition);
-    },
-    [userPosition, searchByNear]
-  );
+    const req = {
+      location: map.center,
+      radius: 500,
+      query: "sorvete",
+    };
 
-  return !loadError ? (
-    isLoaded ? (
-      userPosition && (
-        <GoogleMap mapContainerStyle={container} onLoad={onLoad}>
-          <Marker position={userPosition} />
-          {places &&
-            places.map((place) => (
-              <Marker
-                key={place.place_id}
-                position={{
-                  lat: place.geometry.location.lat(),
-                  lng: place.geometry.location.lng(),
-                }}
-              />
-            ))}
-        </GoogleMap>
-      )
-    ) : (
-      <h4>Loader...</h4>
-    )
-  ) : (
-    <h1>O mapa não pôde ser carregado</h1>
+    service.textSearch(req, (res, status) => {
+      console.log(res);
+    });
+  };
+
+  return (
+    <Map
+      google={google}
+      zoom={18}
+      centerAroundCurrentLocation
+      containerStyle={containerStyle}
+      onReady={handleOnMapReady}
+    ></Map>
   );
 };
 
-export default Map;
+export default GoogleApiWrapper({
+  apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+  language: "pt-BR",
+})(MapContainer);
