@@ -5,9 +5,6 @@ import "@material/react-material-icon/dist/material-icon.css";
 
 import MaterialIcon from "@material/react-material-icon";
 import TextField, { HelperText, Input } from "@material/react-text-field";
-
-import { Container } from "./styles";
-import { SearchArea } from "./styles";
 import { useMap } from "../Providers/MapProvider";
 
 import logo from "../assets/img/logo.png";
