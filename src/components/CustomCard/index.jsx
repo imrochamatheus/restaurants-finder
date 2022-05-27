@@ -1,11 +1,11 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Rating } from "@mui/material";
 import { Box } from "@mui/system";
 
 import logo from "../../assets/img/logo.png";
 
 const CustomCard = ({ place }) => {
   console.log(place);
-
   return (
     <Card>
       <Box paddingX={2} display="flex" justifyContent="space-between">
@@ -21,6 +21,7 @@ const CustomCard = ({ place }) => {
           >
             {place.name}
           </Typography>
+          <Rating name="read-only" value={place.rating} readOnly size="small" />
           <Typography
             variant="body2"
             color="text.secondary"

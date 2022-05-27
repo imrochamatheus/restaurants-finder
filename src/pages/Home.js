@@ -58,8 +58,15 @@ const Home = () => {
   };
 
   return (
-    <>
-      <Box sx={{ background: "#fff", paddingX: 4, paddingY: 2 }}>
+    <Box height="100vh" display="flex" flexDirection="column">
+      <Box
+        sx={{
+          background: "#fff",
+          paddingX: 4,
+          paddingY: 2,
+          textAlign: "center",
+        }}
+      >
         <LogoContainer src={logo} alt="food finder logo" width={300} />
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
           <FormControl fullWidth>
@@ -90,7 +97,7 @@ const Home = () => {
         </Box>
       </Box>
 
-      <PlacesContainer container spacing={1} height="62vh" overflow="auto">
+      <PlacesContainer>
         {places &&
           places.map((place, i) => (
             <Grid item xs={12} key={i}>
@@ -98,7 +105,7 @@ const Home = () => {
             </Grid>
           ))}
       </PlacesContainer>
-    </>
+    </Box>
   );
 };
 

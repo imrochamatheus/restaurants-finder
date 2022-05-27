@@ -8,7 +8,7 @@ function App() {
       <Grid
         item
         xs={12}
-        sm={5}
+        sm={4}
         xl={2}
         display="flex"
         flexDirection="column"
@@ -16,7 +16,7 @@ function App() {
       >
         <Home />
       </Grid>
-      <Grid item xs={12} sm={7} xl={10} sx={{ position: "relative" }}>
+      <Grid item xs={12} sm={8} xl={10} sx={{ position: "relative" }}>
         <Map />
       </Grid>
     </Grid>
