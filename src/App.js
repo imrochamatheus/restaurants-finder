@@ -4,11 +4,19 @@ import Home from "./pages/Home";
 
 function App() {
   return (
-    <Grid container>
-      <Grid item xs={12} sm={4} paddingX={4}>
+    <Grid container sx={{ background: "rgba(0,0,0,0.05)" }}>
+      <Grid
+        item
+        xs={12}
+        sm={5}
+        xl={2}
+        display="flex"
+        flexDirection="column"
+        gap={1}
+      >
         <Home />
       </Grid>
-      <Grid item xs={12} sm={8} sx={{ position: "relative" }}>
+      <Grid item xs={12} sm={7} xl={10} sx={{ position: "relative" }}>
         <Map />
       </Grid>
     </Grid>

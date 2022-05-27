@@ -23,12 +23,12 @@ const MapProvider = ({ children }) => {
     return setMarkers(
       places.map((place) => {
         return {
+          ...place,
           name: place.name,
           position: {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
           },
-          place,
         };
       })
     );

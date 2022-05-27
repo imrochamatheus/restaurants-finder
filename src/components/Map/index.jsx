@@ -59,9 +59,9 @@ const MapContainer = (props) => {
         google={props.google}
         onReady={searchByNear}
         onRecenter={searchByNear}
-        centerAroundCurrentLocation
         center={userPosition}
-        style={{ maxWidth: "100%", height: "100vh" }}
+        centerAroundCurrentLocation
+        style={{ width: "100%", maxWidth: "100%", height: "100vh" }}
       >
         <Marker
           position={userPosition}

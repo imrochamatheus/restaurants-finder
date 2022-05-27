@@ -4,18 +4,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import { Reset } from "styled-reset";
-import { theme } from "./themes/theme";
-import { ThemeProvider } from "styled-components";
+import { CssBaseline } from "@mui/material";
 import MapProvider from "./Providers/MapProvider";
+import PlacesProvider from "./Providers/PlacesProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode>
   <MapProvider>
-    <Reset />
-    <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <PlacesProvider>
+      <Reset />
       <App />
-    </ThemeProvider>
+    </PlacesProvider>
   </MapProvider>
   //</React.StrictMode>
 );

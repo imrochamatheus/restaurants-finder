@@ -1,15 +1,21 @@
 import { useState } from "react";
+import {
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  OutlinedInput,
+  IconButton,
+  Grid,
+} from "@mui/material";
 
-import "@material/react-text-field/dist/text-field.css";
-import "@material/react-material-icon/dist/material-icon.css";
-
-import MaterialIcon from "@material/react-material-icon";
-
-import TextField, { HelperText, Input } from "@material/react-text-field";
 import { useMap } from "../Providers/MapProvider";
-import { LogoContainer } from "./styles";
+import { LogoContainer, PlacesContainer } from "./styles";
 import { Slider, Box } from "@mui/material";
 
+import { usePlaces } from "../Providers/PlacesProvider";
+
+import SearchIcon from "@mui/icons-material/Search";
+import CustomCard from "../components/CustomCard";
 import logo from "../assets/img/logo.png";
 
 const marks = [
@@ -40,6 +46,8 @@ const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(1);
 
+  const { places } = usePlaces();
+
   const { searchByText } = useMap();
   const handleClick = () => {
     searchByText(inputValue, sliderValue);
@@ -51,32 +59,45 @@ const Home = () => {
 
   return (
     <>
-      <LogoContainer src={logo} alt="food finder logo" width={300} />
-
-      <Box>
-        <TextField
-          outlined
-          variant="standard"
-          label="Pesquisar..."
-          onChange={({ target }) => setInputValue(target.value)}
-          helperText={<HelperText>O que vamos comer hoje?</HelperText>}
-          trailingIcon={<MaterialIcon role="button" icon="search" />}
-        >
-          <Input
-            value={inputValue}
-            onChange={({ target }) => setInputValue(target.value)}
+      <Box sx={{ background: "#fff", paddingX: 4, paddingY: 2 }}>
+        <LogoContainer src={logo} alt="food finder logo" width={300} />
+        <Box display="flex" flexDirection="column" gap={3} alignItems="center">
+          <FormControl fullWidth>
+            <InputLabel>Escolha um tipo de comida...</InputLabel>
+            <OutlinedInput
+              label="Escolha um tipo de comida..."
+              value={inputValue}
+              onChange={({ target }) => setInputValue(target.value)}
+              id="input-with-icon-adornment"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClick}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Slider
+            aria-label="Custom marks"
+            step={1}
+            valueLabelDisplay="auto"
+            marks={marks}
+            min={1}
+            sx={{ maxWidth: "275px" }}
+            onChange={handleSlideChange}
           />
-        </TextField>
-        <Slider
-          aria-label="Custom marks"
-          step={1}
-          valueLabelDisplay="auto"
-          marks={marks}
-          min={1}
-          onChange={handleSlideChange}
-        />
-        <button onClick={handleClick}>Pesquisar</button>
+        </Box>
       </Box>
+
+      <PlacesContainer container spacing={1} height="62vh" overflow="auto">
+        {places &&
+          places.map((place, i) => (
+            <Grid item xs={12} key={i}>
+              <CustomCard {...{ place, i }} />
+            </Grid>
+          ))}
+      </PlacesContainer>
     </>
   );
 };
