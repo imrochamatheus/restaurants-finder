@@ -20,25 +20,23 @@ const Home = () => {
   };
 
   return (
-    <Container>
-      <SearchArea>
-        <img src={logo} alt="food finder logo" width={150} />
-        <TextField
-          outlined
-          variant="standard"
-          label="Pesquisar..."
+    <>
+      <img src={logo} alt="food finder logo" width={150} />
+      <TextField
+        outlined
+        variant="standard"
+        label="Pesquisar..."
+        onChange={({ target }) => setInputValue(target.value)}
+        helperText={<HelperText>O que vamos comer hoje?</HelperText>}
+        trailingIcon={<MaterialIcon role="button" icon="search" />}
+      >
+        <Input
+          value={inputValue}
           onChange={({ target }) => setInputValue(target.value)}
-          helperText={<HelperText>O que vamos comer hoje?</HelperText>}
-          trailingIcon={<MaterialIcon role="button" icon="search" />}
-        >
-          <Input
-            value={inputValue}
-            onChange={({ target }) => setInputValue(target.value)}
-          />
-        </TextField>
-        <button onClick={handleClick}>Pesquisar</button>
-      </SearchArea>
-    </Container>
+        />
+      </TextField>
+      <button onClick={handleClick}>Pesquisar</button>
+    </>
   );
 };
 

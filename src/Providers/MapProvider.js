@@ -1,12 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useCallback } from "react";
 
 const MapContext = createContext();
 
 const MapProvider = ({ children }) => {
+  const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState(null);
   const [google, setGoogle] = useState(null);
   const [map, setMap] = useState(null);
+
+  useEffect(() => {
+    window.navigator.geolocation.getCurrentPosition(({ coords }) => {
+      setUserPosition({
+        lat: coords.latitude,
+        lng: coords.longitude,
+      });
+    });
+  }, []);
 
   const createMarkers = useCallback((places) => {
     return setMarkers(
@@ -27,7 +37,7 @@ const MapProvider = ({ children }) => {
     (_, map) => {
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
-        radius: 500,
+        radius: 2000,
         type: ["restaurant"],
         location: map.center,
       };
@@ -56,8 +66,10 @@ const MapProvider = ({ children }) => {
           createMarkers(response);
         }
       });
+
+      map.panTo(userPosition);
     },
-    [google, map, createMarkers]
+    [google, map, createMarkers, userPosition]
   );
 
   return (
@@ -69,6 +81,7 @@ const MapProvider = ({ children }) => {
         markers,
         setMarkers,
         setGoogle,
+        userPosition,
         searchByText,
         searchByNear,
       }}
