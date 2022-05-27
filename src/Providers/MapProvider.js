@@ -7,6 +7,7 @@ const MapProvider = ({ children }) => {
   const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState(null);
   const [google, setGoogle] = useState(null);
+  const [range, setRange] = useState(1000);
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -33,11 +34,28 @@ const MapProvider = ({ children }) => {
     );
   }, []);
 
+  const checkIfInRange = useCallback(
+    (places, radius) => {
+      const selectedPlaces = places.filter((place) => {
+        const isSmaller =
+          google.maps.geometry.spherical.computeDistanceBetween(
+            place.geometry.location,
+            userPosition
+          ) < radius;
+
+        return isSmaller;
+      });
+
+      createMarkers(selectedPlaces);
+    },
+    [createMarkers, userPosition, google]
+  );
+
   const searchByNear = useCallback(
     (_, map) => {
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
-        radius: 2000,
+        radius: range,
         type: ["restaurant"],
         location: map.center,
       };
@@ -49,11 +67,13 @@ const MapProvider = ({ children }) => {
       });
       setMap(map);
     },
-    [google, createMarkers]
+    [google, createMarkers, range]
   );
 
   const searchByText = useCallback(
-    (query) => {
+    (query, radius) => {
+      setRange(radius * 100);
+      map.panTo(userPosition);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
         query,
@@ -63,13 +83,11 @@ const MapProvider = ({ children }) => {
 
       service.textSearch(parameters, (response, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          createMarkers(response);
+          checkIfInRange(response, radius * 100);
         }
       });
-
-      map.panTo(userPosition);
     },
-    [google, map, createMarkers, userPosition]
+    [google, map, userPosition, checkIfInRange]
   );
 
   return (
@@ -77,6 +95,8 @@ const MapProvider = ({ children }) => {
       value={{
         map,
         setMap,
+        range,
+        setRange,
         google,
         markers,
         setMarkers,

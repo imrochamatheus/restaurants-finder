@@ -1,20 +1,18 @@
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import { Circle } from "google-maps-react";
+import { Box } from "@mui/material";
 
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
 
+import RecenterButton from "../RecenterButton";
 import foodIcon from "../../assets/img/foodMarker.png";
 import userIcon from "../../assets/img/here-icon.png";
-import { Box } from "@mui/system";
-
-const mapContainer = {
-  width: "inherit",
-};
+import foodImage from "../../assets/img/food-icon.png";
 
 const MapContainer = (props) => {
-  const { markers, setGoogle, searchByNear, userPosition } = useMap();
+  const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
 
   const [clickedMarker, setClickedMarker] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
@@ -31,7 +29,7 @@ const MapContainer = (props) => {
         null,
         null,
         null,
-        new window.google.maps.Size(35, 50)
+        new window.google.maps.Size(35, 52)
       ),
     []
   );
@@ -55,17 +53,21 @@ const MapContainer = (props) => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ height: "100vh", position: "relative" }}>
       <Map
         zoom={15}
         google={props.google}
         onReady={searchByNear}
         onRecenter={searchByNear}
-        containerStyle={mapContainer}
         centerAroundCurrentLocation
         center={userPosition}
+        style={{ maxWidth: "100%", height: "100vh" }}
       >
-        <Marker position={userPosition} icon={userMarker} animation />
+        <Marker
+          position={userPosition}
+          icon={userMarker}
+          animation={window.google.maps.Animation.BOUNCE}
+        />
 
         {markers &&
           markers.map((marker, i) => (
@@ -77,10 +79,10 @@ const MapContainer = (props) => {
               onClick={handleMarkerClick}
             />
           ))}
-
+        <RecenterButton />
         {userPosition && (
           <Circle
-            radius={2000}
+            radius={range}
             center={userPosition}
             // onMouseover={() => console.log("mouseover")}
             // onClick={() => console.log("click")}
@@ -94,11 +96,29 @@ const MapContainer = (props) => {
         )}
 
         <InfoWindow visible={selected} marker={clickedMarker}>
-          <div>
+          {/* <div>
             <h2 style={{ fontSize: "24px" }}>
               <span role="img" aria-label="bear">
                 🐻
+                <img
+                  src={foodImage}
+                  alt="food icon"
+                  width="100px"
+                  height="100px"
+                />
               </span>
+
+              {currentPlace?.title}
+            </h2>
+          </div> */}
+          <div>
+            <h2 style={{ fontSize: "24px" }}>
+              <img
+                src={foodImage}
+                alt="food icon"
+                width="100px"
+                height="100px"
+              />
 
               {currentPlace?.title}
             </h2>
