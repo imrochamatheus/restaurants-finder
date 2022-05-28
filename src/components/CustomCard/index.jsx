@@ -34,7 +34,7 @@ const CustomCard = ({ place, i }) => {
           setInfos(response);
         }
       });
-    }, i * 400);
+    }, i * 500);
   }, [map, place, i]);
 
   return infos ? (
@@ -59,7 +59,12 @@ const CustomCard = ({ place, i }) => {
           >
             {place.name}
           </Typography>
-          <Rating name="read-only" value={place.rating} readOnly size="small" />
+          <Rating
+            name="read-only"
+            value={place.rating ?? 0}
+            readOnly
+            size="small"
+          />
           <Typography
             variant="body2"
             color="text.secondary"

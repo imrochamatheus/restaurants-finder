@@ -1,15 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
+import { usePlaces } from "./PlacesProvider";
 
 const MapContext = createContext();
 
 const MapProvider = ({ children }) => {
   const [userPosition, setUserPosition] = useState(null);
-  const [markers, setMarkers] = useState(null);
+  const [markers, setMarkers] = useState([]);
   const [google, setGoogle] = useState(null);
-  const [range, setRange] = useState(500);
   const [map, setMap] = useState(null);
+  const [range, setRange] = useState(400);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(null);
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -22,18 +24,30 @@ const MapProvider = ({ children }) => {
 
   const createMarkers = useCallback((places) => {
     setIsLoading(false);
-    return setMarkers(
-      places.map((place) => {
-        return {
-          ...place,
-          name: place.name,
-          position: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          },
-        };
-      })
-    );
+    const newMarkers = places.map((place) => {
+      return {
+        ...place,
+        name: place.name,
+        position: {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        },
+      };
+    });
+
+    setMarkers(newMarkers);
+    // return setMarkers((currentMarkers) =>
+    //   places.map((place) => {
+    //     return {
+    //       ...place,
+    //       name: place.name,
+    //       position: {
+    //         lat: place.geometry.location.lat(),
+    //         lng: place.geometry.location.lng(),
+    //       },
+    //     };
+    //   })
+    // );
   }, []);
 
   const checkIfInRange = useCallback(
@@ -55,6 +69,7 @@ const MapProvider = ({ children }) => {
 
   const searchByNear = useCallback(
     (_, map) => {
+      console.log("a");
       setIsLoading(true);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
@@ -63,14 +78,23 @@ const MapProvider = ({ children }) => {
         location: map.center,
       };
 
-      service.nearbySearch(parameters, (response, status) => {
+      service.nearbySearch(parameters, (response, status, pagination) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          createMarkers(response);
+          if (pagination.hasNextPage) {
+            createMarkers([...response, ...markers]);
+            setCurrentPage(pagination);
+            // setTimeout(() => {
+            //   pagination.nextPage();
+            // }, 2000);
+          } else {
+            createMarkers([...response, ...markers]);
+            setCurrentPage(null);
+          }
         }
       });
       setMap(map);
     },
-    [google, createMarkers, range]
+    [google, createMarkers, range, markers]
   );
 
   const searchByText = useCallback(
@@ -85,9 +109,18 @@ const MapProvider = ({ children }) => {
         type: ["restaurant"],
       };
 
-      service.textSearch(parameters, (response, status) => {
+      service.textSearch(parameters, (response, status, pagination) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          checkIfInRange(response, radius * 100);
+          if (pagination.hasNextPage) {
+            checkIfInRange(response, radius * 100);
+            setCurrentPage(pagination);
+            // setTimeout(() => {
+            //   pagination.nextPage();
+            // }, 2000);
+          } else {
+            checkIfInRange(response, radius * 100);
+            setCurrentPage(null);
+          }
         }
       });
     },
@@ -98,14 +131,16 @@ const MapProvider = ({ children }) => {
     <MapContext.Provider
       value={{
         map,
-        setMap,
         range,
-        setRange,
         google,
+        setMap,
         markers,
+        setRange,
         isLoading,
-        setMarkers,
         setGoogle,
+        setMarkers,
+        currentPage,
+        setIsLoading,
         userPosition,
         searchByText,
         searchByNear,

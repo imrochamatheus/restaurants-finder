@@ -6,6 +6,7 @@ import {
   OutlinedInput,
   IconButton,
   Grid,
+  Button,
 } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
@@ -49,7 +50,7 @@ const Home = () => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const { places } = usePlaces();
-  const { searchByText, isLoading } = useMap();
+  const { searchByText, isLoading, currentPage } = useMap();
 
   const handleClick = () => {
     searchByText(inputValue, sliderValue);
@@ -57,6 +58,10 @@ const Home = () => {
 
   const handleSlideChange = ({ target }) => {
     setSliderValue(target.value);
+  };
+
+  const searchMoreResults = () => {
+    currentPage.nextPage();
   };
 
   return (
@@ -112,14 +117,21 @@ const Home = () => {
       </Box>
 
       {!isLoading ? (
-        <PlacesContainer>
-          {places &&
-            places.map((place, i) => (
-              <Grid item xs={12} key={i}>
-                <CustomCard {...{ place, i }} />
-              </Grid>
-            ))}
-        </PlacesContainer>
+        <>
+          <PlacesContainer>
+            {places &&
+              places.map((place, i) => (
+                <Grid item xs={12} key={i}>
+                  <CustomCard {...{ place, i }} />
+                </Grid>
+              ))}
+            {currentPage && (
+              <Button onClick={searchMoreResults}>
+                Encontrar mais restaurantes
+              </Button>
+            )}
+          </PlacesContainer>
+        </>
       ) : (
         <HomeLoader />
       )}

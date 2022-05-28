@@ -5,14 +5,14 @@ const PlacesContext = createContext();
 
 const PlacesProvider = ({ children }) => {
   const { markers } = useMap();
-  const [places, setPlaces] = useState();
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     setPlaces(markers);
   }, [markers]);
 
   return (
-    <PlacesContext.Provider value={{ places }}>
+    <PlacesContext.Provider value={{ places, setPlaces }}>
       {children}
     </PlacesContext.Provider>
   );
