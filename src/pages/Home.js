@@ -18,7 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
 import pizzaImage from "../assets/img/pizza.png";
 import logo from "../assets/img/logo.png";
-import Loader from "../components/Loader";
+import HomeLoader from "../components/HomeLoader";
 
 const marks = [
   {
@@ -47,11 +47,10 @@ const marks = [
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { places } = usePlaces();
+  const { searchByText, isLoading } = useMap();
 
-  const { searchByText } = useMap();
   const handleClick = () => {
     searchByText(inputValue, sliderValue);
   };
@@ -122,7 +121,7 @@ const Home = () => {
             ))}
         </PlacesContainer>
       ) : (
-        <Loader />
+        <HomeLoader />
       )}
     </Box>
   );

@@ -21,6 +21,7 @@ const MapProvider = ({ children }) => {
   }, []);
 
   const createMarkers = useCallback((places) => {
+    setIsLoading(false);
     return setMarkers(
       places.map((place) => {
         return {
@@ -54,6 +55,7 @@ const MapProvider = ({ children }) => {
 
   const searchByNear = useCallback(
     (_, map) => {
+      setIsLoading(true);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
         radius: range,
@@ -73,6 +75,7 @@ const MapProvider = ({ children }) => {
 
   const searchByText = useCallback(
     (query, radius) => {
+      setIsLoading(true);
       setRange(radius * 100);
       map.panTo(userPosition);
       const service = new google.maps.places.PlacesService(map);
@@ -100,6 +103,7 @@ const MapProvider = ({ children }) => {
         setRange,
         google,
         markers,
+        isLoading,
         setMarkers,
         setGoogle,
         userPosition,

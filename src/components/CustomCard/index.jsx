@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { CardContent, CardMedia, Typography } from "@mui/material";
 import { Rating } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import logo from "../../assets/img/logo.png";
-import Loader from "../Loader";
+import Loader from "../CardLoader";
 
 import { StyledCard } from "./styles";
 
