@@ -6,11 +6,15 @@ import {
   OutlinedInput,
   IconButton,
   Grid,
-  Button,
 } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
-import { LogoContainer, PlacesContainer, Rotate } from "./styles";
+import {
+  LogoContainer,
+  PlacesContainer,
+  Rotate,
+  LoaderContainer,
+} from "./styles";
 import { Slider, Box } from "@mui/material";
 
 import { usePlaces } from "../Providers/PlacesProvider";
@@ -50,7 +54,7 @@ const Home = () => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const { places } = usePlaces();
-  const { searchByText, isLoading, currentPage } = useMap();
+  const { searchByText, isLoading } = useMap();
 
   const handleClick = () => {
     searchByText(inputValue, sliderValue);
@@ -58,12 +62,6 @@ const Home = () => {
 
   const handleSlideChange = ({ target }) => {
     setSliderValue(target.value);
-  };
-
-  const searchMoreResults = () => {
-    setTimeout(() => {
-      currentPage.nextPage();
-    }, 2000);
   };
 
   return (
@@ -127,15 +125,16 @@ const Home = () => {
                   <CustomCard {...{ place, i }} />
                 </Grid>
               ))}
-            {currentPage && (
-              <Button onClick={searchMoreResults}>
-                Encontrar mais restaurantes
-              </Button>
-            )}
           </PlacesContainer>
         </>
       ) : (
-        <HomeLoader />
+        <LoaderContainer>
+          <HomeLoader
+            width={150}
+            height={150}
+            style={{ alignSelf: "center" }}
+          />
+        </LoaderContainer>
       )}
     </Box>
   );

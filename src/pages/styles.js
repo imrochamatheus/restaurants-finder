@@ -7,12 +7,19 @@ export const LogoContainer = styled.img`
 `;
 
 export const PlacesContainer = styled.div`
-  height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
   gap: 10px;
+  height: 100%;
+  display: flex;
   padding: 16px;
+  overflow: auto;
+  flex-direction: column;
+`;
+
+export const LoaderContainer = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 const rotate = keyframes`

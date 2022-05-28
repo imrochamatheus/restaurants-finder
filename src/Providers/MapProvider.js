@@ -10,7 +10,7 @@ const MapProvider = ({ children }) => {
   const [map, setMap] = useState(null);
   const [range, setRange] = useState(400);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(null);
+  // const [currentPage, setCurrentPage] = useState(null);
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -23,29 +23,19 @@ const MapProvider = ({ children }) => {
 
   const createMarkers = useCallback((places) => {
     setIsLoading(false);
-    const newMarkers = places.map((place) => {
-      return {
-        ...place,
-        name: place.name,
-        position: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        },
-      };
-    });
-    setMarkers(newMarkers);
-    // return setMarkers((currentMarkers) =>
-    //   places.map((place) => {
-    //     return {
-    //       ...place,
-    //       name: place.name,
-    //       position: {
-    //         lat: place.geometry.location.lat(),
-    //         lng: place.geometry.location.lng(),
-    //       },
-    //     };
-    //   })
-    // );
+
+    return setMarkers((currentMarkers) =>
+      places.map((place) => {
+        return {
+          ...place,
+          name: place.name,
+          position: {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          },
+        };
+      })
+    );
   }, []);
 
   const checkIfInRange = useCallback(
@@ -79,13 +69,13 @@ const MapProvider = ({ children }) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           if (pagination.hasNextPage) {
             createMarkers(response);
-            setCurrentPage(pagination);
+            // setCurrentPage(pagination);
             // setTimeout(() => {
             //   pagination.nextPage();
             // }, 2000);
           } else {
             createMarkers(response);
-            setCurrentPage(null);
+            // setCurrentPage(null);
           }
         }
       });
@@ -110,13 +100,13 @@ const MapProvider = ({ children }) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           if (pagination.hasNextPage) {
             checkIfInRange(response, radius * 100);
-            setCurrentPage(pagination);
+            // setCurrentPage(pagination);
             // setTimeout(() => {
             //   pagination.nextPage();
             // }, 2000);
           } else {
             checkIfInRange(response, radius * 100);
-            setCurrentPage(null);
+            // setCurrentPage(null);
           }
         }
       });
@@ -136,7 +126,7 @@ const MapProvider = ({ children }) => {
         isLoading,
         setGoogle,
         setMarkers,
-        currentPage,
+        // currentPage,
         setIsLoading,
         userPosition,
         searchByText,

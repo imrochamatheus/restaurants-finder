@@ -1,16 +1,16 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useMap } from "./MapProvider";
 
 const DirectionsContext = createContext();
 
 const DirectionsProvider = ({ children }) => {
-  const { markers, userPosition, google, map } = useMap();
+  const { markers, userPosition, google } = useMap();
+  const [directions, setDirections] = useState(null);
   const [route, setRoute] = useState(null);
 
   useEffect(() => {
     if (markers.length && userPosition && google) {
       const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer();
 
       const start = new window.google.maps.LatLng(
         -12.9944885,
@@ -28,12 +28,21 @@ const DirectionsProvider = ({ children }) => {
       directionsService.route(request, function (result, status) {
         if (status === "OK") {
           console.log(result);
-          setRoute(result.routes[0].overview_path);
-          // directionsRenderer.setDirections(result);
+          // setRoute(result.routes[0].overview_path);
         }
       });
     }
   }, [markers, userPosition, google]);
+
+  const getDirection = useMemo(
+    (destiny) => {
+      const start = window.google?.maps.LatLng(
+        userPosition.lat,
+        userPosition.lng
+      );
+    },
+    [userPosition]
+  );
 
   return (
     <DirectionsContext.Provider value={{ route }}>
