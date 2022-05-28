@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
-import { LogoContainer, PlacesContainer } from "./styles";
+import { LogoContainer, PlacesContainer, Rotate } from "./styles";
 import { Slider, Box } from "@mui/material";
 
 import { usePlaces } from "../Providers/PlacesProvider";
@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
 import pizzaImage from "../assets/img/pizza.png";
 import logo from "../assets/img/logo.png";
+import Loader from "../components/Loader";
 
 const marks = [
   {
@@ -46,6 +47,7 @@ const marks = [
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [sliderValue, setSliderValue] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { places } = usePlaces();
 
@@ -59,7 +61,12 @@ const Home = () => {
   };
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column">
+    <Box
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      sx={{ position: "relative" }}
+    >
       <Box
         sx={{
           paddingX: 4,
@@ -67,16 +74,14 @@ const Home = () => {
           textAlign: "center",
         }}
       >
-        <img
+        <Rotate
           src={pizzaImage}
           alt={pizzaImage}
           style={{
-            position: "absolute",
             width: "200px",
-            top: -50,
-            left: -75,
           }}
         />
+
         <LogoContainer src={logo} alt="food finder logo" width={300} />
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
           <FormControl fullWidth>
@@ -107,14 +112,18 @@ const Home = () => {
         </Box>
       </Box>
 
-      <PlacesContainer>
-        {places &&
-          places.map((place, i) => (
-            <Grid item xs={12} key={i}>
-              <CustomCard {...{ place, i }} />
-            </Grid>
-          ))}
-      </PlacesContainer>
+      {!isLoading ? (
+        <PlacesContainer>
+          {places &&
+            places.map((place, i) => (
+              <Grid item xs={12} key={i}>
+                <CustomCard {...{ place, i }} />
+              </Grid>
+            ))}
+        </PlacesContainer>
+      ) : (
+        <Loader />
+      )}
     </Box>
   );
 };

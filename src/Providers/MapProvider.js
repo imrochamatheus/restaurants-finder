@@ -7,7 +7,7 @@ const MapProvider = ({ children }) => {
   const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState(null);
   const [google, setGoogle] = useState(null);
-  const [range, setRange] = useState(1000);
+  const [range, setRange] = useState(500);
   const [map, setMap] = useState(null);
 
   useEffect(() => {
