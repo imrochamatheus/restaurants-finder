@@ -1,10 +1,18 @@
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
+import {
+  Map,
+  GoogleApiWrapper,
+  Marker,
+  InfoWindow,
+  Polyline,
+} from "google-maps-react";
+
 import { Circle } from "google-maps-react";
 import { Box } from "@mui/material";
 
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
+import { useDirections } from "../../Providers/DirectionsProvider";
 
 import RecenterButton from "../RecenterButton";
 import foodIcon from "../../assets/img/foodMarker.png";
@@ -13,6 +21,7 @@ import foodImage from "../../assets/img/food-icon.png";
 
 const MapContainer = (props) => {
   const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
+  const { route } = useDirections();
 
   const [clickedMarker, setClickedMarker] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
@@ -21,6 +30,19 @@ const MapContainer = (props) => {
   useEffect(() => {
     setGoogle(props.google);
   }, [setGoogle, props.google]);
+
+  // const start = new window.google.maps.LatLng(-12.9944885, -38.49691069999999);
+  // const end = new window.google.maps.LatLng(-12.9950158, -38.4951764);
+
+  // let request = {
+  //   origin: start,
+  //   destination: end,
+  //   travelMode: "DRIVING",
+  // };
+
+  // const handleService = (res, status) => {
+  //   console.log(res, status);
+  // };
 
   let foodMarker = useMemo(
     () =>
@@ -110,6 +132,17 @@ const MapContainer = (props) => {
             <h2 style={{ fontSize: "16px" }}>{currentPlace?.title}</h2>
           </div>
         </InfoWindow>
+        {route && (
+          <Polyline
+            path={route}
+            geodesic={false}
+            options={{
+              strokeColor: "#38B44F",
+              strokeOpacity: 0.5,
+              strokeWeight: 5,
+            }}
+          />
+        )}
       </Map>
     </Box>
   );

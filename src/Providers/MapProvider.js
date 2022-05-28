@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
-import { usePlaces } from "./PlacesProvider";
 
 const MapContext = createContext();
 
@@ -34,7 +33,6 @@ const MapProvider = ({ children }) => {
         },
       };
     });
-
     setMarkers(newMarkers);
     // return setMarkers((currentMarkers) =>
     //   places.map((place) => {
@@ -69,7 +67,6 @@ const MapProvider = ({ children }) => {
 
   const searchByNear = useCallback(
     (_, map) => {
-      console.log("a");
       setIsLoading(true);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
@@ -81,20 +78,20 @@ const MapProvider = ({ children }) => {
       service.nearbySearch(parameters, (response, status, pagination) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           if (pagination.hasNextPage) {
-            createMarkers([...response, ...markers]);
+            createMarkers(response);
             setCurrentPage(pagination);
             // setTimeout(() => {
             //   pagination.nextPage();
             // }, 2000);
           } else {
-            createMarkers([...response, ...markers]);
+            createMarkers(response);
             setCurrentPage(null);
           }
         }
       });
       setMap(map);
     },
-    [google, createMarkers, range, markers]
+    [google, createMarkers, range]
   );
 
   const searchByText = useCallback(

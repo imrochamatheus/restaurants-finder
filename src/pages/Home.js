@@ -61,7 +61,9 @@ const Home = () => {
   };
 
   const searchMoreResults = () => {
-    currentPage.nextPage();
+    setTimeout(() => {
+      currentPage.nextPage();
+    }, 2000);
   };
 
   return (
