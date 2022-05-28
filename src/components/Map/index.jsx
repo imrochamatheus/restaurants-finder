@@ -84,44 +84,30 @@ const MapContainer = (props) => {
           <Circle
             radius={range}
             center={userPosition}
-            // onMouseover={() => console.log("mouseover")}
-            // onClick={() => console.log("click")}
-            // onMouseout={() => console.log("mouseout")}
             strokeColor="transparent"
             strokeOpacity={0}
             strokeWeight={5}
-            fillColor="#FF0000"
-            fillOpacity={0.08}
+            fillColor="green"
+            fillOpacity={0.1}
           />
         )}
 
-        <InfoWindow visible={selected} marker={clickedMarker}>
-          {/* <div>
-            <h2 style={{ fontSize: "24px" }}>
-              <span role="img" aria-label="bear">
-                🐻
-                <img
-                  src={foodImage}
-                  alt="food icon"
-                  width="100px"
-                  height="100px"
-                />
-              </span>
-
-              {currentPlace?.title}
-            </h2>
-          </div> */}
-          <div>
-            <h2 style={{ fontSize: "24px" }}>
-              <img
-                src={foodImage}
-                alt="food icon"
-                width="100px"
-                height="100px"
-              />
-
-              {currentPlace?.title}
-            </h2>
+        <InfoWindow
+          visible={selected}
+          marker={clickedMarker}
+          onClose={() => {
+            setSelected(false);
+          }}
+          style={{ background: "blue" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <img src={foodImage} alt="food icon" width="100px" height="100px" />
+            <h2 style={{ fontSize: "16px" }}>{currentPlace?.title}</h2>
           </div>
         </InfoWindow>
       </Map>

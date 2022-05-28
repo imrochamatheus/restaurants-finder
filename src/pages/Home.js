@@ -16,6 +16,7 @@ import { usePlaces } from "../Providers/PlacesProvider";
 
 import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
+import pizzaImage from "../assets/img/pizza.png";
 import logo from "../assets/img/logo.png";
 
 const marks = [
@@ -61,12 +62,21 @@ const Home = () => {
     <Box height="100vh" display="flex" flexDirection="column">
       <Box
         sx={{
-          background: "#fff",
           paddingX: 4,
           paddingY: 2,
           textAlign: "center",
         }}
       >
+        <img
+          src={pizzaImage}
+          alt={pizzaImage}
+          style={{
+            position: "absolute",
+            width: "200px",
+            top: -50,
+            left: -75,
+          }}
+        />
         <LogoContainer src={logo} alt="food finder logo" width={300} />
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
           <FormControl fullWidth>
