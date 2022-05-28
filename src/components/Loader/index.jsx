@@ -1,7 +1,7 @@
 import Lottie from "react-lottie";
 import * as animationData from "../../assets/lotties/loader.json";
 
-const Loader = () => {
+const Loader = ({ height, width }) => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -15,8 +15,8 @@ const Loader = () => {
     <div>
       <Lottie
         options={defaultOptions}
-        height={300}
-        width={300}
+        height={height}
+        width={width}
         isStopped={false}
         isPaused={false}
       />

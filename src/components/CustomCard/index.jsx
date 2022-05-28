@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { Rating } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
@@ -13,6 +7,8 @@ import { useState } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import logo from "../../assets/img/logo.png";
 import Loader from "../Loader";
+
+import { StyledCard } from "./styles";
 
 const CustomCard = ({ place, i }) => {
   const { map } = useMap();
@@ -42,9 +38,9 @@ const CustomCard = ({ place, i }) => {
   }, [map, place, i]);
 
   return infos ? (
-    <Card elevation={12}>
+    <StyledCard elevation={12}>
       <Box
-        paddingX={2}
+        paddingX={1}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -100,9 +96,11 @@ const CustomCard = ({ place, i }) => {
           />
         )}
       </Box>
-    </Card>
+    </StyledCard>
   ) : (
-    <Loader />
+    <StyledCard>
+      <Loader height={200} width={200} />
+    </StyledCard>
   );
 };
 

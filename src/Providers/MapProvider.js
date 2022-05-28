@@ -9,6 +9,7 @@ const MapProvider = ({ children }) => {
   const [google, setGoogle] = useState(null);
   const [range, setRange] = useState(500);
   const [map, setMap] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(({ coords }) => {
