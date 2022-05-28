@@ -36,12 +36,14 @@ const DirectionsProvider = ({ children }) => {
 
   const getDirection = useMemo(
     (destiny) => {
-      const start = window.google?.maps.LatLng(
-        userPosition.lat,
-        userPosition.lng
-      );
+      if (google) {
+        const start = new window.google.maps.LatLng(
+          userPosition.lat,
+          userPosition.lng
+        );
+      }
     },
-    [userPosition]
+    [userPosition, google]
   );
 
   return (

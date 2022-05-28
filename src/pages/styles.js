@@ -8,10 +8,10 @@ export const LogoContainer = styled.img`
 
 export const PlacesContainer = styled.div`
   gap: 10px;
-  height: 100%;
   display: flex;
   padding: 16px;
   overflow: auto;
+  justify-content: flex-start;
   flex-direction: column;
 `;
 

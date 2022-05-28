@@ -38,7 +38,7 @@ const CustomCard = ({ place, i }) => {
   }, [map, place, i]);
 
   return infos ? (
-    <StyledCard elevation={12}>
+    <StyledCard elevation={3}>
       <Box
         paddingX={1}
         display="flex"
