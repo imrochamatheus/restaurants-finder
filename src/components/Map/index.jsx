@@ -9,7 +9,7 @@ import {
 import { Circle } from "google-maps-react";
 import { Box } from "@mui/material";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
@@ -21,7 +21,7 @@ import foodImage from "../../assets/img/food-icon.png";
 
 const MapContainer = (props) => {
   const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
-  const { route } = useDirections();
+  const { route, setDestiny } = useDirections();
 
   const [clickedMarker, setClickedMarker] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
@@ -30,19 +30,6 @@ const MapContainer = (props) => {
   useEffect(() => {
     setGoogle(props.google);
   }, [setGoogle, props.google]);
-
-  // const start = new window.google.maps.LatLng(-12.9944885, -38.49691069999999);
-  // const end = new window.google.maps.LatLng(-12.9950158, -38.4951764);
-
-  // let request = {
-  //   origin: start,
-  //   destination: end,
-  //   travelMode: "DRIVING",
-  // };
-
-  // const handleService = (res, status) => {
-  //   console.log(res, status);
-  // };
 
   let foodMarker = useMemo(
     () =>
@@ -68,11 +55,15 @@ const MapContainer = (props) => {
     []
   );
 
-  const handleMarkerClick = (place, marker) => {
-    setClickedMarker(marker);
-    setCurrentPlace(place);
-    setSelected(true);
-  };
+  const handleMarkerClick = useCallback(
+    (_, marker) => {
+      setDestiny(marker.internalPosition);
+      setCurrentPlace(marker.infos);
+      setClickedMarker(marker);
+      setSelected(true);
+    },
+    [setDestiny]
+  );
 
   return (
     <Box sx={{ height: "100vh", position: "relative" }}>
@@ -97,6 +88,7 @@ const MapContainer = (props) => {
               key={i}
               icon={foodMarker}
               title={marker.name}
+              infos={marker}
               position={marker.position}
               onClick={handleMarkerClick}
             />
@@ -129,9 +121,19 @@ const MapContainer = (props) => {
             }}
           >
             <img src={foodImage} alt="food icon" width="100px" height="100px" />
-            <h2 style={{ fontSize: "16px" }}>{currentPlace?.title}</h2>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
+            >
+              <h2 style={{ fontSize: "16px" }}>{currentPlace?.name}</h2>
+              <p style={{ fontSize: "12px" }}>{currentPlace?.vicinity}</p>
+            </div>
           </div>
         </InfoWindow>
+
         {route && (
           <Polyline
             path={route}

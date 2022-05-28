@@ -4,38 +4,19 @@ import { Box } from "@mui/system";
 import { useEffect } from "react";
 
 import { useState } from "react";
-import { useMap } from "../../Providers/MapProvider";
 import logo from "../../assets/img/logo.png";
 import Loader from "../CardLoader";
 
 import { StyledCard } from "./styles";
+import { usePlaces } from "../../Providers/PlacesProvider";
 
 const CustomCard = ({ place, i }) => {
-  const { map } = useMap();
+  const { getDetails } = usePlaces();
   const [infos, setInfos] = useState(null);
 
   useEffect(() => {
-    var request = {
-      placeId: place.place_id,
-      fields: [
-        "name",
-        "rating",
-        "formatted_phone_number",
-        "geometry",
-        "opening_hours",
-        "photo",
-      ],
-    };
-
-    setTimeout(() => {
-      const service = new window.google.maps.places.PlacesService(map);
-      service.getDetails(request, (response, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          setInfos(response);
-        }
-      });
-    }, i * 500);
-  }, [map, place, i]);
+    getDetails(place, setInfos, i);
+  }, [place, i, getDetails]);
 
   return infos ? (
     <StyledCard elevation={3}>

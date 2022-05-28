@@ -136,6 +136,7 @@ const Home = () => {
           />
         </LoaderContainer>
       )}
+      {/* <Modal /> */}
     </Box>
   );
 };

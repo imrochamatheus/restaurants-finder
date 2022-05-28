@@ -1,18 +1,50 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useMap } from "./MapProvider";
 
 const PlacesContext = createContext();
 
 const PlacesProvider = ({ children }) => {
-  const { markers } = useMap();
+  const { markers, map } = useMap();
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     setPlaces(markers);
   }, [markers]);
 
+  const getDetails = useCallback(
+    (place, callback, i) => {
+      var request = {
+        placeId: place.place_id,
+        fields: [
+          "name",
+          "rating",
+          "formatted_phone_number",
+          "geometry",
+          "opening_hours",
+          "photo",
+        ],
+      };
+
+      setTimeout(() => {
+        const service = new window.google.maps.places.PlacesService(map);
+        service.getDetails(request, (response, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            callback(response);
+          }
+        });
+      }, i * 500);
+    },
+    [map]
+  );
+
   return (
-    <PlacesContext.Provider value={{ places, setPlaces }}>
+    <PlacesContext.Provider value={{ places, setPlaces, getDetails }}>
       {children}
     </PlacesContext.Provider>
   );
