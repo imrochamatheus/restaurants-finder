@@ -55,7 +55,7 @@ const MapContainer = (props) => {
   return (
     <Box sx={{ height: "100vh", position: "relative" }}>
       <Map
-        zoom={15}
+        zoom={16}
         google={props.google}
         onReady={searchByNear}
         onRecenter={searchByNear}
@@ -88,7 +88,7 @@ const MapContainer = (props) => {
             strokeOpacity={0}
             strokeWeight={5}
             fillColor="green"
-            fillOpacity={0.1}
+            fillOpacity={0.05}
           />
         )}
 
