@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useMap } from "./MapProvider";
 
 const DirectionsContext = createContext();
@@ -27,8 +33,15 @@ const DirectionsProvider = ({ children }) => {
     }
   }, [userPosition, destiny, google]);
 
+  const clearRoute = useCallback(() => {
+    setRoute(null);
+    setDestiny(null);
+  }, []);
+
   return (
-    <DirectionsContext.Provider value={{ route, setDestiny }}>
+    <DirectionsContext.Provider
+      value={{ route, setRoute, setDestiny, clearRoute }}
+    >
       {children}
     </DirectionsContext.Provider>
   );

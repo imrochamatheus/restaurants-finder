@@ -1,29 +1,21 @@
+import { useMap } from "../../Providers/MapProvider";
+import { useDirections } from "../../Providers/DirectionsProvider";
+
+import { CustomButton } from "./styles";
+
 function RecenterButton({ panTo }) {
+  const { recenter } = useMap();
+  const { clearRoute } = useDirections();
+
+  const handleClick = () => {
+    recenter();
+    clearRoute();
+  };
+
   return (
-    <button
-      style={{
-        position: "absolute",
-        bottom: "2rem",
-        left: "0.5rem",
-        width: "4rem",
-        background: "none",
-        border: "none",
-        zIndex: "10",
-      }}
-      onClick={() => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            panTo({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-          },
-          () => null
-        );
-      }}
-    >
+    <CustomButton onClick={handleClick}>
       <img src="/compass.svg" alt="compass" />
-    </button>
+    </CustomButton>
   );
 }
 

@@ -47,13 +47,13 @@ const Modal = ({ place, isOpen, setIsOpen }) => {
               {place.formatted_address}
             </Typography>
           )}
-          {/* 
-          {place.opening_hours?.open_now && (
+
+          {place.opening_hours && (
             <Typography>
               <span style={{ fontWeight: 700 }}>Horas: </span>{" "}
               {place.opening_hours.open_now ? " Aberto" : " Fechado"}
             </Typography>
-          )} */}
+          )}
           <Typography
             component="div"
             sx={{ display: "flex", alignItems: "center" }}
@@ -75,34 +75,41 @@ const Modal = ({ place, isOpen, setIsOpen }) => {
           )}
 
           <Divider />
-          <Typography variant="h6">Opiniões</Typography>
-          {place.reviews.map((review) => {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: 1,
-                  gap: "10px",
-                }}
-              >
-                <Avatar src={review.author_name} alt={review.author_name} />
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                    paddingY: 3,
-                  }}
-                >
-                  <Typography variant="body1" fontWeight={700}>
-                    {review.author_name}
-                  </Typography>
-                  <Typography variant="body2">{review.text}</Typography>
-                </div>
-              </div>
-            );
-          })}
+
+          {place.reviews && (
+            <>
+              <Typography variant="h6">Opiniões</Typography>
+              {place.reviews.map((review) => {
+                return (
+                  <div
+                    style={{
+                      display: "flex",
+                      padding: 1,
+                      gap: "10px",
+                    }}
+                  >
+                    <Avatar
+                      src={review.author_name}
+                      alt={review.author_name}
+                      sx={{ width: 40, height: 40, marginTop: 1 }}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <Typography variant="body1" fontWeight={700}>
+                        {review.author_name}
+                      </Typography>
+                      <Typography variant="body2">{review.text}</Typography>
+                    </div>
+                  </div>
+                );
+              })}{" "}
+            </>
+          )}
 
           {place.photos.length && (
             <>

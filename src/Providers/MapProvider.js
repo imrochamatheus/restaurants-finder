@@ -20,6 +20,10 @@ const MapProvider = ({ children }) => {
     });
   }, []);
 
+  const recenter = useCallback(() => {
+    map.panTo(userPosition);
+  }, [userPosition, map]);
+
   const createMarkers = useCallback((places) => {
     setTimeout(() => {
       setIsLoading(false);
@@ -107,6 +111,7 @@ const MapProvider = ({ children }) => {
         markers,
         setRange,
         isLoading,
+        recenter,
         setGoogle,
         setMarkers,
         setIsLoading,

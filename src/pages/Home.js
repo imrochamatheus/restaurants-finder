@@ -1,30 +1,22 @@
 import { useState } from "react";
-import {
-  FormControl,
-  InputLabel,
-  InputAdornment,
-  OutlinedInput,
-  IconButton,
-  Grid,
-} from "@mui/material";
+import { Grid, IconButton } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
 import { usePlaces } from "../Providers/PlacesProvider";
 
-import {
-  LogoContainer,
-  PlacesContainer,
-  Rotate,
-  LoaderContainer,
-} from "./styles";
+import { LogoContainer, PlacesContainer } from "./styles";
+import { Main } from "./styles";
+import { SearchContainer } from "./styles";
+import { StyledInput } from "./styles";
 import { Slider, Box } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
-import pizzaImage from "../assets/img/pizza.png";
 import HomeLoader from "../components/HomeLoader";
-import logo from "../assets/img/logo.png";
+import logo from "../assets/img/newLogo.png";
 import Modal from "../components/Modal";
+
+import { useDirections } from "../Providers/DirectionsProvider";
 
 const marks = [
   {
@@ -57,9 +49,11 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { places } = usePlaces();
+  const { clearRoute } = useDirections();
   const { searchByText, isLoading } = useMap();
 
-  const handleClick = () => {
+  const searchPlaces = () => {
+    clearRoute();
     searchByText(inputValue, sliderValue);
   };
 
@@ -68,45 +62,25 @@ const Home = () => {
   };
 
   return (
-    <Box
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      sx={{ position: "relative" }}
-    >
-      <Box
-        sx={{
-          paddingX: 4,
-          paddingY: 2,
-          textAlign: "center",
-        }}
-      >
-        <Rotate
-          src={pizzaImage}
-          alt={pizzaImage}
-          style={{
-            width: "200px",
-          }}
-        />
-
-        <LogoContainer src={logo} alt="food finder logo" width={300} />
+    <Main>
+      <SearchContainer>
+        <LogoContainer src={logo} alt="food finder logo" />
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
-          <FormControl fullWidth>
-            <InputLabel>Escolha um tipo de comida...</InputLabel>
-            <OutlinedInput
-              label="Escolha um tipo de comida..."
-              value={inputValue}
-              onChange={({ target }) => setInputValue(target.value)}
-              id="input-with-icon-adornment"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClick}>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+          <StyledInput
+            fullWidth
+            variant="outlined"
+            focused={false}
+            value={inputValue}
+            label="Escolha um tipo de comida..."
+            onChange={({ target }) => setInputValue(target.value)}
+            InputProps={{
+              endAdornment: (
+                <IconButton position="start" onClick={searchPlaces}>
+                  <SearchIcon />
+                </IconButton>
+              ),
+            }}
+          />
           <Slider
             aria-label="Custom marks"
             step={1}
@@ -117,7 +91,7 @@ const Home = () => {
             onChange={handleSlideChange}
           />
         </Box>
-      </Box>
+      </SearchContainer>
 
       {!isLoading ? (
         <>
@@ -131,16 +105,10 @@ const Home = () => {
           </PlacesContainer>
         </>
       ) : (
-        <LoaderContainer>
-          <HomeLoader
-            width={150}
-            height={150}
-            style={{ alignSelf: "center" }}
-          />
-        </LoaderContainer>
+        <HomeLoader width={150} height={150} style={{ alignSelf: "center" }} />
       )}
       <Modal place={modalInfos} isOpen={isOpen} setIsOpen={setIsOpen} />
-    </Box>
+    </Main>
   );
 };
 

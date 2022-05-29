@@ -1,9 +1,35 @@
 import styled from "@emotion/styled";
-import { keyframes } from "@mui/material";
+import { Box, keyframes, TextField } from "@mui/material";
+
+export const Main = styled.main`
+  height: 100vh;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+`;
+
+export const SearchContainer = styled(Box)(({ theme }) => ({
+  padding: "8px 32px",
+  textAlign: "center",
+  background: "#fff",
+  display: "flex",
+  gap: "16px",
+  flexDirection: "column",
+}));
+
+export const StyledInput = styled(TextField)(({ theme }) => ({
+  border: "none",
+
+  "&:focus": {
+    border: "none !important",
+    outline: "none !important",
+  },
+}));
 
 export const LogoContainer = styled.img`
   width: 100%;
-  max-width: 250px;
+  max-width: 125px;
+  align-self: center;
 `;
 
 export const PlacesContainer = styled.div`
