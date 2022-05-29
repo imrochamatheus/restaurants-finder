@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const StyledCard = styled(Card)(({ theme }) => ({
   transition: "transform .2s ease-out;",
-
+  padding: 0,
   "&:hover": {
     transform: "scale(1.05)",
   },

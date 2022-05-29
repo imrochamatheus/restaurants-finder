@@ -17,6 +17,9 @@ export const MapBox = styled("main", {
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: `${drawerWidth}px`,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: `${0}px !important`,
+    },
     display: "flex",
   }),
 }));

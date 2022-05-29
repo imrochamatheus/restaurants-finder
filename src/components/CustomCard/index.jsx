@@ -27,13 +27,18 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
   return infos ? (
     <StyledCard elevation={3} onClick={handleClick}>
       <Box
-        paddingX={1}
+        paddingX={0}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
       >
         <CardContent
-          sx={{ display: "flex", gap: "10px", flexDirection: "column" }}
+          sx={{
+            display: "flex",
+            gap: "5px",
+            flexDirection: "column",
+            paddingY: 2,
+          }}
         >
           <Typography
             variant="h6"
@@ -41,6 +46,7 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 1,
+              fontSize: "16px",
             }}
           >
             {place.name}
@@ -83,7 +89,7 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
             image={place.photos[0].getUrl()}
             alt="Live from space album cover"
             width="100%"
-            height="150"
+            height="130"
             sx={{ maxWidth: "100px" }}
           />
         ) : (

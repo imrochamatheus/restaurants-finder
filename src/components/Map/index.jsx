@@ -12,7 +12,6 @@ import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
 
-import RecenterButton from "../RecenterButton";
 import foodIcon from "../../assets/img/foodMarker.png";
 import userIcon from "../../assets/img/here-icon.png";
 import foodImage from "../../assets/img/food-icon.png";
@@ -101,7 +100,6 @@ const MapContainer = (props) => {
             />
           ))}
         <ClearRouteButton />
-        <RecenterButton />
         {userPosition && (
           <Circle
             radius={range}
@@ -147,9 +145,9 @@ const MapContainer = (props) => {
             path={route}
             geodesic={false}
             options={{
-              strokeColor: "#38B44F",
+              strokeColor: "blue",
               strokeOpacity: 0.5,
-              strokeWeight: 5,
+              strokeWeight: 3,
             }}
           />
         )}
