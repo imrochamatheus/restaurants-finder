@@ -61,7 +61,6 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
 
       setTimeout(() => {
         map.panTo(marker.getPosition());
-        map.setZoom(18);
       }, 500);
     });
 

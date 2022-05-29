@@ -14,7 +14,7 @@ import { useEffect } from "react";
 const Modal = ({ place, isOpen, setIsOpen }) => {
   useEffect(() => {
     if (place) {
-      const isOpenAtTime = place.opening_hours.isOpen(new Date());
+      const isOpenAtTime = place.opening_hours?.isOpen(new Date());
       if (isOpenAtTime) {
         console.log("Sim");
       }
@@ -112,7 +112,7 @@ const Modal = ({ place, isOpen, setIsOpen }) => {
             </>
           )}
 
-          {place.photos.length && (
+          {place.photos?.length && (
             <>
               <Divider sx={{ py: 1 }} />
               <Typography variant="h6">Galeria</Typography>
