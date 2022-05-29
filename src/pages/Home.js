@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
+import { usePlaces } from "../Providers/PlacesProvider";
+
 import {
   LogoContainer,
   PlacesContainer,
@@ -17,13 +19,12 @@ import {
 } from "./styles";
 import { Slider, Box } from "@mui/material";
 
-import { usePlaces } from "../Providers/PlacesProvider";
-
 import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
 import pizzaImage from "../assets/img/pizza.png";
-import logo from "../assets/img/logo.png";
 import HomeLoader from "../components/HomeLoader";
+import logo from "../assets/img/logo.png";
+import Modal from "../components/Modal";
 
 const marks = [
   {
@@ -50,8 +51,10 @@ const marks = [
 ];
 
 const Home = () => {
+  const [sliderValue, setSliderValue] = useState(null);
+  const [modalInfos, setModalInfos] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  const [sliderValue, setSliderValue] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { places } = usePlaces();
   const { searchByText, isLoading } = useMap();
@@ -122,7 +125,7 @@ const Home = () => {
             {places &&
               places.map((place, i) => (
                 <Grid item xs={12} key={i}>
-                  <CustomCard {...{ place, i }} />
+                  <CustomCard {...{ place, i, setIsOpen, setModalInfos }} />
                 </Grid>
               ))}
           </PlacesContainer>
@@ -136,7 +139,7 @@ const Home = () => {
           />
         </LoaderContainer>
       )}
-      {/* <Modal /> */}
+      <Modal place={modalInfos} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Box>
   );
 };

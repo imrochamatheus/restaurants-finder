@@ -19,7 +19,7 @@ const PlacesProvider = ({ children }) => {
 
   const getDetails = useCallback(
     (place, callback, i) => {
-      var request = {
+      const request = {
         placeId: place.place_id,
         fields: [
           "name",
@@ -28,6 +28,8 @@ const PlacesProvider = ({ children }) => {
           "geometry",
           "opening_hours",
           "photo",
+          "reviews",
+          "formatted_address",
         ],
       };
 

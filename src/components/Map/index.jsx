@@ -68,7 +68,7 @@ const MapContainer = (props) => {
   return (
     <Box sx={{ height: "100vh", position: "relative" }}>
       <Map
-        zoom={16}
+        zoom={17}
         google={props.google}
         onReady={searchByNear}
         onRecenter={searchByNear}

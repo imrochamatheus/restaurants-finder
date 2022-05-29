@@ -8,7 +8,7 @@ const MapProvider = ({ children }) => {
   const [markers, setMarkers] = useState([]);
   const [google, setGoogle] = useState(null);
   const [map, setMap] = useState(null);
-  const [range, setRange] = useState(400);
+  const [range, setRange] = useState(500);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -57,6 +57,7 @@ const MapProvider = ({ children }) => {
 
   const searchByNear = useCallback(
     (_, map) => {
+      map.panTo(userPosition);
       setIsLoading(true);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
@@ -72,14 +73,14 @@ const MapProvider = ({ children }) => {
       });
       setMap(map);
     },
-    [google, createMarkers, range]
+    [google, createMarkers, range, userPosition]
   );
 
   const searchByText = useCallback(
     (query, radius) => {
       setIsLoading(true);
-      setRange(radius * 100);
       map.panTo(userPosition);
+      setRange(radius * 100);
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
         query,

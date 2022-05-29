@@ -1,16 +1,17 @@
+import { useEffect } from "react";
+import { useState } from "react";
+
 import { CardContent, CardMedia, Typography } from "@mui/material";
 import { Rating } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect } from "react";
 
-import { useState } from "react";
 import logo from "../../assets/img/logo.png";
 import Loader from "../CardLoader";
 
 import { StyledCard } from "./styles";
 import { usePlaces } from "../../Providers/PlacesProvider";
 
-const CustomCard = ({ place, i }) => {
+const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
   const { getDetails } = usePlaces();
   const [infos, setInfos] = useState(null);
 
@@ -18,8 +19,13 @@ const CustomCard = ({ place, i }) => {
     getDetails(place, setInfos, i);
   }, [place, i, getDetails]);
 
+  const handleClick = () => {
+    setIsOpen(true);
+    setModalInfos(infos);
+  };
+
   return infos ? (
-    <StyledCard elevation={3}>
+    <StyledCard elevation={3} onClick={handleClick}>
       <Box
         paddingX={1}
         display="flex"
