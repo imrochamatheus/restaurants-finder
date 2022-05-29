@@ -10,8 +10,12 @@ import { useMap } from "./MapProvider";
 const PlacesContext = createContext();
 
 const PlacesProvider = ({ children }) => {
+  const [clickedMarker, setClickedMarker] = useState(null);
+  const [currentPlace, setCurrentPlace] = useState(null);
+
   const { markers, setMarkers, map } = useMap();
   const [places, setPlaces] = useState([]);
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     setPlaces(markers);
@@ -31,6 +35,7 @@ const PlacesProvider = ({ children }) => {
           "photo",
           "reviews",
           "formatted_address",
+          "geometry",
         ],
       };
 
@@ -47,7 +52,19 @@ const PlacesProvider = ({ children }) => {
   );
 
   return (
-    <PlacesContext.Provider value={{ places, setPlaces, getDetails }}>
+    <PlacesContext.Provider
+      value={{
+        places,
+        setPlaces,
+        getDetails,
+        selected,
+        setSelected,
+        clickedMarker,
+        setClickedMarker,
+        currentPlace,
+        setCurrentPlace,
+      }}
+    >
       {children}
     </PlacesContext.Provider>
   );

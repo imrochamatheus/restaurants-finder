@@ -8,17 +8,20 @@ import { CssBaseline } from "@mui/material";
 import MapProvider from "./Providers/MapProvider";
 import PlacesProvider from "./Providers/PlacesProvider";
 import DirectionsProvider from "./Providers/DirectionsProvider";
+import MarkersProvider from "./Providers/MarkersProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //<React.StrictMode>
   <MapProvider>
     <DirectionsProvider>
-      <PlacesProvider>
-        <CssBaseline />
-        <Reset />
-        <App />
-      </PlacesProvider>
+      <MarkersProvider>
+        <PlacesProvider>
+          <CssBaseline />
+          <Reset />
+          <App />
+        </PlacesProvider>
+      </MarkersProvider>
     </DirectionsProvider>
   </MapProvider>
   //</React.StrictMode>

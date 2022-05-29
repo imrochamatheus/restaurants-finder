@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useState } from "react";
 
 import { CardContent, CardMedia, Typography } from "@mui/material";
@@ -10,9 +10,17 @@ import Loader from "../CardLoader";
 
 import { StyledCard } from "./styles";
 import { usePlaces } from "../../Providers/PlacesProvider";
+import { useMap } from "../../Providers/MapProvider";
+import { useMarkers } from "../../Providers/MarkersProvider";
+import { useDirections } from "../../Providers/DirectionsProvider";
 
 const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
-  const { getDetails } = usePlaces();
+  const { getDetails, setClickedMarker, setCurrentPlace, setSelected } =
+    usePlaces();
+  const { map, google } = useMap();
+  const { foodMarker } = useMarkers();
+  const { setDestiny, clearRoute } = useDirections();
+
   const [infos, setInfos] = useState(null);
 
   useEffect(() => {
@@ -24,8 +32,62 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
     setModalInfos(infos);
   };
 
+  const handleMarkerClick = useCallback(
+    (_, marker) => {
+      setDestiny(marker.internalPosition);
+      setCurrentPlace(marker.infos);
+      setClickedMarker(marker);
+      setSelected(true);
+    },
+    [setDestiny, setClickedMarker, setCurrentPlace, setSelected]
+  );
+
+  const handleOnMouseEnter = useCallback(() => {
+    const location = {
+      lat: infos.geometry.location.lat(),
+      lng: infos.geometry.location.lng(),
+    };
+
+    const marker = new google.maps.Marker({
+      position: location,
+      title: infos.name,
+      icon: foodMarker,
+      map,
+    });
+
+    marker.infos = infos;
+    marker.addListener("click", (e) => {
+      handleMarkerClick("", marker);
+
+      setTimeout(() => {
+        map.panTo(marker.getPosition());
+        map.setZoom(18);
+      }, 500);
+    });
+
+    clearRoute();
+    setClickedMarker(marker);
+    setCurrentPlace(place);
+    setSelected(true);
+  }, [
+    infos,
+    place,
+    google,
+    map,
+    setClickedMarker,
+    setCurrentPlace,
+    setSelected,
+    foodMarker,
+    clearRoute,
+    handleMarkerClick,
+  ]);
+
   return infos ? (
-    <StyledCard elevation={3} onClick={handleClick}>
+    <StyledCard
+      elevation={3}
+      onClick={handleClick}
+      onMouseEnter={handleOnMouseEnter}
+    >
       <Box
         paddingX={0}
         display="flex"

@@ -7,56 +7,39 @@ import {
   Circle,
 } from "google-maps-react";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
 
-import foodIcon from "../../assets/img/foodMarker.png";
-import userIcon from "../../assets/img/here-icon.png";
 import foodImage from "../../assets/img/food-icon.png";
+import { usePlaces } from "../../Providers/PlacesProvider";
+import { useMarkers } from "../../Providers/MarkersProvider";
 
 import { drawerWidth } from "../../styles";
 import { MapBox } from "./styles";
+
 import ClearRouteButton from "../ClearRouteButton";
 
 const MapContainer = (props) => {
   const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
   const { route, setDestiny } = useDirections();
+  const { foodMarker, userMarker } = useMarkers();
 
-  const [clickedMarker, setClickedMarker] = useState(null);
-  const [currentPlace, setCurrentPlace] = useState(null);
-  const [selected, setSelected] = useState(false);
+  const {
+    clickedMarker,
+    setClickedMarker,
+    currentPlace,
+    setCurrentPlace,
+    selected,
+    setSelected,
+  } = usePlaces();
 
   const { open } = props;
 
   useEffect(() => {
     setGoogle(props.google);
   }, [setGoogle, props.google]);
-
-  let foodMarker = useMemo(
-    () =>
-      new window.google.maps.MarkerImage(
-        foodIcon,
-        null,
-        null,
-        null,
-        new window.google.maps.Size(35, 52)
-      ),
-    []
-  );
-
-  let userMarker = useMemo(
-    () =>
-      new window.google.maps.MarkerImage(
-        userIcon,
-        null,
-        null,
-        null,
-        new window.google.maps.Size(100, 100)
-      ),
-    []
-  );
 
   const handleMarkerClick = useCallback(
     (_, marker) => {
@@ -65,15 +48,8 @@ const MapContainer = (props) => {
       setClickedMarker(marker);
       setSelected(true);
     },
-    [setDestiny]
+    [setDestiny, setClickedMarker, setCurrentPlace, setSelected]
   );
-
-  const handleOnMouseOver = useCallback((_, marker) => {
-    console.log(marker);
-    setCurrentPlace(marker.infos);
-    setClickedMarker(marker);
-    setSelected(true);
-  }, []);
 
   return (
     <MapBox open={open} position="relative !important">
@@ -104,7 +80,6 @@ const MapContainer = (props) => {
               infos={marker}
               position={marker.position}
               onClick={handleMarkerClick}
-              onMouseover={handleOnMouseOver}
             />
           ))}
         <ClearRouteButton />
@@ -143,7 +118,9 @@ const MapContainer = (props) => {
               }}
             >
               <h2 style={{ fontSize: "16px" }}>{currentPlace?.name}</h2>
-              <p style={{ fontSize: "12px" }}>{currentPlace?.vicinity}</p>
+              <p style={{ fontSize: "12px" }}>
+                {currentPlace?.vicinity || currentPlace?.formatted_address}
+              </p>
             </div>
           </div>
         </InfoWindow>

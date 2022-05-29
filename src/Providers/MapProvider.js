@@ -23,6 +23,7 @@ const MapProvider = ({ children }) => {
 
   const recenter = useCallback(() => {
     map.panTo(userPosition);
+    map.setZoom(16);
   }, [userPosition, map]);
 
   const createMarkers = useCallback((places) => {
