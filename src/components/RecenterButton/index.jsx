@@ -1,23 +1,31 @@
 import { useMap } from "../../Providers/MapProvider";
-import { useDirections } from "../../Providers/DirectionsProvider";
-
-import { CustomButton } from "./styles";
-import { Tooltip } from "@mui/material";
+import AdjustIcon from "@mui/icons-material/Adjust";
+import { IconButton, Tooltip } from "@mui/material";
 
 function RecenterButton({ panTo }) {
   const { recenter } = useMap();
-  const { clearRoute } = useDirections();
 
   const handleClick = () => {
     recenter();
-    clearRoute();
   };
 
   return (
-    <Tooltip title="Limpar rota">
-      <CustomButton onClick={handleClick}>
-        <img src="/compass.svg" alt="compass" />
-      </CustomButton>
+    <Tooltip title="Recentralizar">
+      <IconButton
+        onClick={handleClick}
+        sx={{
+          position: "absolute",
+          bottom: "1.8rem",
+          left: "5rem",
+          width: "4rem",
+          background: "none",
+          border: "none",
+          zIndex: "10",
+          cursor: "pointer",
+        }}
+      >
+        <AdjustIcon sx={{ fontSize: "50px" }} />
+      </IconButton>
     </Tooltip>
   );
 }

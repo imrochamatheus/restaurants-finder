@@ -2,10 +2,8 @@ import styled from "@emotion/styled";
 import { Box, keyframes, TextField } from "@mui/material";
 
 export const Main = styled.main`
-  height: 100vh;
-  display: flex;
-  position: relative;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 `;
 
 export const SearchContainer = styled(Box)(({ theme }) => ({
@@ -36,7 +34,7 @@ export const PlacesContainer = styled.div`
   gap: 10px;
   display: flex;
   padding: 16px;
-  overflow: auto;
+
   justify-content: flex-start;
   flex-direction: column;
 `;

@@ -4,10 +4,8 @@ import {
   Marker,
   InfoWindow,
   Polyline,
+  Circle,
 } from "google-maps-react";
-
-import { Circle } from "google-maps-react";
-import { Box } from "@mui/material";
 
 import { useCallback, useMemo, useState } from "react";
 import { useEffect } from "react";
@@ -19,6 +17,10 @@ import foodIcon from "../../assets/img/foodMarker.png";
 import userIcon from "../../assets/img/here-icon.png";
 import foodImage from "../../assets/img/food-icon.png";
 
+import { drawerWidth } from "../../styles";
+import { MapBox } from "./styles";
+import ClearRouteButton from "../ClearRouteButton";
+
 const MapContainer = (props) => {
   const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
   const { route, setDestiny } = useDirections();
@@ -26,6 +28,8 @@ const MapContainer = (props) => {
   const [clickedMarker, setClickedMarker] = useState(null);
   const [currentPlace, setCurrentPlace] = useState(null);
   const [selected, setSelected] = useState(false);
+
+  const { open } = props;
 
   useEffect(() => {
     setGoogle(props.google);
@@ -66,15 +70,18 @@ const MapContainer = (props) => {
   );
 
   return (
-    <Box sx={{ height: "100vh", position: "relative" }}>
+    <MapBox open={open} position="relative !important">
       <Map
-        zoom={17}
+        zoom={16}
         google={props.google}
         onReady={searchByNear}
         onRecenter={searchByNear}
         center={userPosition}
         centerAroundCurrentLocation
-        style={{ width: "100%", maxWidth: "100%", height: "100vh" }}
+        containerStyle={{
+          width: open ? `calc(100vw - ${drawerWidth}px)` : "100vw",
+          height: "100vh",
+        }}
       >
         <Marker
           position={userPosition}
@@ -93,6 +100,7 @@ const MapContainer = (props) => {
               onClick={handleMarkerClick}
             />
           ))}
+        <ClearRouteButton />
         <RecenterButton />
         {userPosition && (
           <Circle
@@ -146,7 +154,7 @@ const MapContainer = (props) => {
           />
         )}
       </Map>
-    </Box>
+    </MapBox>
   );
 };
 

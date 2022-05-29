@@ -17,7 +17,6 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
 
   useEffect(() => {
     getDetails(place, setInfos, i);
-    console.log(place);
   }, [place, i, getDetails]);
 
   const handleClick = () => {
@@ -69,7 +68,7 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
               display: "-webkit-box",
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 1,
             }}
           >
             {place.formatted_address || place.vicinity}

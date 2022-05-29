@@ -79,9 +79,10 @@ const Modal = ({ place, isOpen, setIsOpen }) => {
           {place.reviews && (
             <>
               <Typography variant="h6">Opiniões</Typography>
-              {place.reviews.map((review) => {
+              {place.reviews.map((review, i) => {
                 return (
                   <div
+                    key={i}
                     style={{
                       display: "flex",
                       padding: 1,

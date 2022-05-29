@@ -4,7 +4,7 @@ import { Grid, IconButton, Tooltip } from "@mui/material";
 import { useMap } from "../Providers/MapProvider";
 import { usePlaces } from "../Providers/PlacesProvider";
 
-import { LogoContainer, PlacesContainer } from "./styles";
+import { PlacesContainer } from "./styles";
 import { Main } from "./styles";
 import { SearchContainer } from "./styles";
 import { StyledInput } from "./styles";
@@ -13,7 +13,7 @@ import { Slider, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
 import HomeLoader from "../components/HomeLoader";
-import logo from "../assets/img/newLogo.png";
+// import logo from "../assets/img/newLogo.png";
 import Modal from "../components/Modal";
 
 import { useDirections } from "../Providers/DirectionsProvider";
@@ -64,7 +64,7 @@ const Home = () => {
   return (
     <Main>
       <SearchContainer>
-        <LogoContainer src={logo} alt="food finder logo" />
+        {/* <LogoContainer src={logo} alt="food finder logo" /> */}
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
           <StyledInput
             fullWidth
