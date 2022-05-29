@@ -2,6 +2,7 @@ import { useMap } from "../../Providers/MapProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
 
 import { CustomButton } from "./styles";
+import { Tooltip } from "@mui/material";
 
 function RecenterButton({ panTo }) {
   const { recenter } = useMap();
@@ -13,9 +14,11 @@ function RecenterButton({ panTo }) {
   };
 
   return (
-    <CustomButton onClick={handleClick}>
-      <img src="/compass.svg" alt="compass" />
-    </CustomButton>
+    <Tooltip title="Limpar rota">
+      <CustomButton onClick={handleClick}>
+        <img src="/compass.svg" alt="compass" />
+      </CustomButton>
+    </Tooltip>
   );
 }
 

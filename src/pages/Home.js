@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Tooltip } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
 import { usePlaces } from "../Providers/PlacesProvider";
@@ -75,9 +75,11 @@ const Home = () => {
             onChange={({ target }) => setInputValue(target.value)}
             InputProps={{
               endAdornment: (
-                <IconButton position="start" onClick={searchPlaces}>
-                  <SearchIcon />
-                </IconButton>
+                <Tooltip title="Pesquisar">
+                  <IconButton position="start" onClick={searchPlaces}>
+                    <SearchIcon />
+                  </IconButton>
+                </Tooltip>
               ),
             }}
           />
@@ -105,7 +107,7 @@ const Home = () => {
           </PlacesContainer>
         </>
       ) : (
-        <HomeLoader width={150} height={150} style={{ alignSelf: "center" }} />
+        <HomeLoader width={150} height={150} />
       )}
       <Modal place={modalInfos} isOpen={isOpen} setIsOpen={setIsOpen} />
     </Main>

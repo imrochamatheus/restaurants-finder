@@ -17,6 +17,7 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
 
   useEffect(() => {
     getDetails(place, setInfos, i);
+    console.log(place);
   }, [place, i, getDetails]);
 
   const handleClick = () => {
@@ -38,7 +39,6 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
           <Typography
             variant="h6"
             sx={{
-              display: "-webkit-box",
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 1,
@@ -46,12 +46,22 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
           >
             {place.name}
           </Typography>
-          <Rating
-            name="read-only"
-            value={place.rating ?? 0}
-            readOnly
-            size="small"
-          />
+          <Typography
+            sx={{ display: "flex", alignItens: "center", gap: 1 }}
+            variant="body2"
+          >
+            {(place.rating ?? 0) + " "}
+            <Rating
+              sx={{
+                verticalAlign: "middle",
+              }}
+              name="read-only"
+              value={place.rating ?? 0}
+              readOnly
+              size="small"
+            />
+            {`(${place.user_ratings_total ?? 0})`}{" "}
+          </Typography>
           <Typography
             variant="body2"
             color="text.secondary"

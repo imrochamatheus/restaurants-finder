@@ -24,6 +24,7 @@ const PlacesProvider = ({ children }) => {
         fields: [
           "name",
           "rating",
+          "user_ratings_total",
           "formatted_phone_number",
           "geometry",
           "opening_hours",

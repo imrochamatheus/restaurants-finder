@@ -8,6 +8,7 @@ function App() {
       <Grid item width="450px" display="flex" flexDirection="column" gap={1}>
         <Home />
       </Grid>
+
       <Grid item xs sx={{ position: "relative" }}>
         <Map />
       </Grid>
