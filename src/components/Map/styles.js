@@ -10,16 +10,13 @@ export const MapBox = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `${0}px`,
   ...(open && {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: `${drawerWidth}px`,
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: `${0}px !important`,
-    },
+    [theme.breakpoints.down("sm")]: {},
     display: "flex",
   }),
 }));
