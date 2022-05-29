@@ -108,14 +108,19 @@ const Home = () => {
               ))
             ) : (
               <>
-                <img src={noResults} alt="no results" />
+                <img
+                  src={noResults}
+                  alt="no results"
+                  width={150}
+                  style={{ alignSelf: "center", marginTop: "50%" }}
+                />
                 <Typography variant="h6">
                   Nenhum restaurante encontrado...
                 </Typography>
               </>
             )}
           </PlacesContainer>
-          {nextPage ? (
+          {nextPage && places.length ? (
             <Button
               fullWidth
               onClick={() => {

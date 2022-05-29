@@ -33,7 +33,6 @@ export const PlacesContainer = styled.div`
   gap: 10px;
   display: flex;
   padding: 16px;
-
   justify-content: flex-start;
   flex-direction: column;
 `;
