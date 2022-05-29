@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 import { Box, keyframes, TextField } from "@mui/material";
 
 export const Main = styled.main`
-  /* display: flex;
-  flex-direction: column; */
+  padding-top: 30px;
 `;
 
 export const SearchContainer = styled(Box)(({ theme }) => ({

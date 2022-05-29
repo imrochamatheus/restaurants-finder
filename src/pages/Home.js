@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Grid, IconButton, Tooltip } from "@mui/material";
+import { Button, Grid, IconButton, Tooltip, Typography } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
 import { usePlaces } from "../Providers/PlacesProvider";
@@ -13,7 +13,7 @@ import { Slider, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CustomCard from "../components/CustomCard";
 import HomeLoader from "../components/HomeLoader";
-// import logo from "../assets/img/newLogo.png";
+import noResults from "../assets/img/no-results.gif";
 import Modal from "../components/Modal";
 
 import { useDirections } from "../Providers/DirectionsProvider";
@@ -50,7 +50,7 @@ const Home = () => {
 
   const { places } = usePlaces();
   const { clearRoute } = useDirections();
-  const { searchByText, isLoading } = useMap();
+  const { searchByText, isLoading, nextPage, setIsLoading } = useMap();
 
   const searchPlaces = () => {
     clearRoute();
@@ -64,7 +64,6 @@ const Home = () => {
   return (
     <Main>
       <SearchContainer>
-        {/* <LogoContainer src={logo} alt="food finder logo" /> */}
         <Box display="flex" flexDirection="column" gap={3} alignItems="center">
           <StyledInput
             fullWidth
@@ -88,8 +87,11 @@ const Home = () => {
             step={1}
             valueLabelDisplay="auto"
             marks={marks}
+            color="error"
             min={1}
-            sx={{ maxWidth: "275px" }}
+            sx={{
+              maxWidth: "275px",
+            }}
             onChange={handleSlideChange}
           />
         </Box>
@@ -98,13 +100,35 @@ const Home = () => {
       {!isLoading ? (
         <>
           <PlacesContainer>
-            {places &&
+            {places.length ? (
               places.map((place, i) => (
                 <Grid item xs={12} key={i}>
                   <CustomCard {...{ place, i, setIsOpen, setModalInfos }} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <>
+                <img src={noResults} alt="no results" />
+                <Typography variant="h6">
+                  Nenhum restaurante encontrado...
+                </Typography>
+              </>
+            )}
           </PlacesContainer>
+          {nextPage ? (
+            <Button
+              fullWidth
+              onClick={() => {
+                setIsLoading(true);
+                nextPage.nextPage();
+              }}
+              sx={{ textTransform: "none" }}
+            >
+              Buscar mais resultados
+            </Button>
+          ) : (
+            ""
+          )}
         </>
       ) : (
         <HomeLoader width={150} height={150} />

@@ -68,6 +68,13 @@ const MapContainer = (props) => {
     [setDestiny]
   );
 
+  const handleOnMouseOver = useCallback((_, marker) => {
+    console.log(marker);
+    setCurrentPlace(marker.infos);
+    setClickedMarker(marker);
+    setSelected(true);
+  }, []);
+
   return (
     <MapBox open={open} position="relative !important">
       <Map
@@ -97,6 +104,7 @@ const MapContainer = (props) => {
               infos={marker}
               position={marker.position}
               onClick={handleMarkerClick}
+              onMouseover={handleOnMouseOver}
             />
           ))}
         <ClearRouteButton />

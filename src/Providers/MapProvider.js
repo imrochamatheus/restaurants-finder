@@ -10,6 +10,7 @@ const MapProvider = ({ children }) => {
   const [map, setMap] = useState(null);
   const [range, setRange] = useState(500);
   const [isLoading, setIsLoading] = useState(false);
+  const [nextPage, setNextPage] = useState(null);
 
   useEffect(() => {
     window.navigator.geolocation.getCurrentPosition(({ coords }) => {
@@ -92,9 +93,16 @@ const MapProvider = ({ children }) => {
         type: ["restaurant"],
       };
 
-      service.textSearch(parameters, (response, status) => {
+      service.textSearch(parameters, (response, status, pagination) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          checkIfInRange(response, radius * 100);
+          if (pagination.hasNextPage) {
+            checkIfInRange(response, radius * 100);
+            setNextPage(pagination);
+          } else {
+            console.log(pagination);
+            setNextPage(null);
+            checkIfInRange(response, radius * 100);
+          }
         }
       });
     },
@@ -113,6 +121,7 @@ const MapProvider = ({ children }) => {
         isLoading,
         recenter,
         setGoogle,
+        nextPage,
         setMarkers,
         setIsLoading,
         userPosition,

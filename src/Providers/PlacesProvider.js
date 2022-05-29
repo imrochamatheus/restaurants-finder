@@ -10,12 +10,12 @@ import { useMap } from "./MapProvider";
 const PlacesContext = createContext();
 
 const PlacesProvider = ({ children }) => {
-  const { markers, map } = useMap();
+  const { markers, setMarkers, map } = useMap();
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     setPlaces(markers);
-  }, [markers]);
+  }, [markers, setMarkers]);
 
   const getDetails = useCallback(
     (place, callback, i) => {
