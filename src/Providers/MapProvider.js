@@ -62,7 +62,7 @@ const MapProvider = ({ children }) => {
         marker.place = place;
         setTimeout(() => {
           marker.setMap(map);
-        }, 2000);
+        }, 500);
         return marker;
       });
 
@@ -112,9 +112,11 @@ const MapProvider = ({ children }) => {
   const searchByText = useCallback(
     (query, radius) => {
       setIsLoading(true);
-      markers.forEach((marker) => marker.setMap(null));
-      map.panTo(userPosition);
       setRange(radius * 100);
+
+      map.panTo(userPosition);
+      markers.forEach((marker) => marker.setMap(null));
+
       const service = new google.maps.places.PlacesService(map);
       const parameters = {
         query,
