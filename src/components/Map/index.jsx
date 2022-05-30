@@ -7,46 +7,25 @@ import {
   Circle,
 } from "google-maps-react";
 
-import { useCallback } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
-import { useDirections } from "../../Providers/DirectionsProvider";
 import userIcon from "../../assets/img/here-icon.png";
+import { useDirections } from "../../Providers/DirectionsProvider";
 
 import foodImage from "../../assets/img/food-icon.png";
 import { usePlaces } from "../../Providers/PlacesProvider";
-import { useMarkers } from "../../Providers/MarkersProvider";
 
 import ClearRouteButton from "../ClearRouteButton";
 
 const MapContainer = (props) => {
-  const { range, markers, setGoogle, searchByNear, userPosition, google } =
-    useMap();
-  const { route, setDestiny } = useDirections();
-  const { foodMarker } = useMarkers();
+  const { range, setGoogle, searchByNear, userPosition, google } = useMap();
+  const { route } = useDirections();
 
-  const {
-    clickedMarker,
-    setClickedMarker,
-    currentPlace,
-    setCurrentPlace,
-    selected,
-    setSelected,
-  } = usePlaces();
+  const { clickedMarker, currentPlace, selected, setSelected } = usePlaces();
 
   useEffect(() => {
     setGoogle(props.google);
   }, [setGoogle, props.google]);
-
-  const handleMarkerClick = useCallback(
-    (_, marker) => {
-      setDestiny(marker.internalPosition);
-      setCurrentPlace(marker.infos);
-      setClickedMarker(marker);
-      setSelected(true);
-    },
-    [setDestiny, setClickedMarker, setCurrentPlace, setSelected]
-  );
 
   return (
     <Map
@@ -76,7 +55,7 @@ const MapContainer = (props) => {
         />
       )}
 
-      {markers &&
+      {/* {markers &&
         markers.map((marker, i) => (
           <Marker
             key={i}
@@ -86,7 +65,7 @@ const MapContainer = (props) => {
             position={marker.position}
             onClick={handleMarkerClick}
           />
-        ))}
+        ))} */}
       <ClearRouteButton open={props.open} />
       {userPosition && (
         <Circle

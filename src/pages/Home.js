@@ -15,7 +15,6 @@ import CustomCard from "../components/CustomCard";
 import HomeLoader from "../components/HomeLoader";
 import noResults from "../assets/img/no-results.gif";
 import Modal from "../components/Modal";
-
 import { useDirections } from "../Providers/DirectionsProvider";
 
 const marks = [

@@ -10,75 +10,52 @@ import Loader from "../CardLoader";
 
 import { StyledCard } from "./styles";
 import { usePlaces } from "../../Providers/PlacesProvider";
-import { useMap } from "../../Providers/MapProvider";
 import { useMarkers } from "../../Providers/MarkersProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
 
-const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
+const CustomCard = ({ i, place: marker, setIsOpen, setModalInfos }) => {
   const { getDetails, setClickedMarker, setCurrentPlace, setSelected } =
     usePlaces();
-  const { map, google } = useMap();
-  const { foodMarker } = useMarkers();
-  const { setDestiny, clearRoute } = useDirections();
+
+  const { handleMarkerClick } = useMarkers();
+  const { clearRoute } = useDirections();
 
   const [infos, setInfos] = useState(null);
+  const [cardMarker, setCardMarker] = useState(null);
 
   useEffect(() => {
-    getDetails(place, setInfos, i);
-  }, [place, i, getDetails]);
+    marker.addListener("click", (e) => handleMarkerClick(e, marker));
+    setCardMarker(marker);
+    getDetails(marker.place, setInfos, i);
+  }, [marker, i, getDetails, handleMarkerClick]);
 
   const handleClick = () => {
     setIsOpen(true);
     setModalInfos(infos);
   };
 
-  const handleMarkerClick = useCallback(
-    (_, marker) => {
-      setDestiny(marker.internalPosition);
-      setCurrentPlace(marker.infos);
-      setClickedMarker(marker);
-      setSelected(true);
-    },
-    [setDestiny, setClickedMarker, setCurrentPlace, setSelected]
-  );
+  // const handleMarkerClick = useCallback(
+  //   (_, marker) => {
+  //     setDestiny(marker.internalPosition);
+  //     setCurrentPlace(marker.infos);
+  //     setClickedMarker(marker);
+  //     setSelected(true);
+  //   },
+  //   [setDestiny, setClickedMarker, setCurrentPlace, setSelected]
+  // );
 
   const handleOnMouseEnter = useCallback(() => {
-    const location = {
-      lat: infos.geometry.location.lat(),
-      lng: infos.geometry.location.lng(),
-    };
-
-    const marker = new google.maps.Marker({
-      position: location,
-      title: infos.name,
-      icon: foodMarker,
-      map,
-    });
-
-    marker.infos = infos;
-    marker.addListener("click", (e) => {
-      handleMarkerClick("", marker);
-
-      setTimeout(() => {
-        map.panTo(marker.getPosition());
-      }, 500);
-    });
-
     clearRoute();
-    setClickedMarker(marker);
-    setCurrentPlace(place);
+    setCurrentPlace(infos);
+    setClickedMarker(cardMarker);
     setSelected(true);
   }, [
-    infos,
-    place,
-    google,
-    map,
-    setClickedMarker,
+    cardMarker,
     setCurrentPlace,
+    setClickedMarker,
     setSelected,
-    foodMarker,
     clearRoute,
-    handleMarkerClick,
+    infos,
   ]);
 
   return infos ? (
@@ -110,23 +87,23 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
               fontSize: "16px",
             }}
           >
-            {place.name}
+            {infos.name}
           </Typography>
           <Typography
             sx={{ display: "flex", alignItens: "center", gap: 1 }}
             variant="body2"
           >
-            {(place.rating ?? 0) + " "}
+            {(infos.rating ?? 0) + " "}
             <Rating
               sx={{
                 verticalAlign: "middle",
               }}
               name="read-only"
-              value={place.rating ?? 0}
+              value={infos.rating ?? 0}
               readOnly
               size="small"
             />
-            {`(${place.user_ratings_total ?? 0})`}{" "}
+            {`(${infos.user_ratings_total ?? 0})`}{" "}
           </Typography>
           <Typography
             variant="body2"
@@ -138,16 +115,16 @@ const CustomCard = ({ i, place, setIsOpen, setModalInfos }) => {
               WebkitLineClamp: 1,
             }}
           >
-            {place.formatted_address || place.vicinity}
+            {infos.formatted_address || infos.vicinity}
           </Typography>
           <Typography variant="body2">
             {infos.formatted_phone_number}
           </Typography>
         </CardContent>
-        {place?.photos ? (
+        {infos?.photos ? (
           <CardMedia
             component="img"
-            image={place.photos[0].getUrl()}
+            image={infos.photos[0].getUrl()}
             alt="Live from space album cover"
             width="100%"
             height="130"

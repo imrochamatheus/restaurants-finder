@@ -15,13 +15,13 @@ root.render(
   //<React.StrictMode>
   <MapProvider>
     <DirectionsProvider>
-      <MarkersProvider>
-        <PlacesProvider>
+      <PlacesProvider>
+        <MarkersProvider>
           <CssBaseline />
           <Reset />
           <App />
-        </PlacesProvider>
-      </MarkersProvider>
+        </MarkersProvider>
+      </PlacesProvider>
     </DirectionsProvider>
   </MapProvider>
   //</React.StrictMode>

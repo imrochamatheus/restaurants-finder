@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+
+import foodIcon from "../assets/img/foodMarker.png";
 
 const MapContext = createContext();
 
@@ -23,26 +25,51 @@ const MapProvider = ({ children }) => {
 
   const recenter = useCallback(() => {
     map.panTo(userPosition);
-    map.setZoom(16);
   }, [userPosition, map]);
 
-  const createMarkers = useCallback((places) => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return setMarkers(
-      places.map((place) => {
-        return {
-          ...place,
-          name: place.name,
-          position: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          },
-        };
-      })
-    );
+  const getPosition = useCallback((place) => {
+    return {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng(),
+    };
   }, []);
+
+  const foodMarker = useMemo(() => {
+    if (google) {
+      return new google.maps.MarkerImage(
+        foodIcon,
+        null,
+        null,
+        null,
+        new google.maps.Size(35, 52)
+      );
+    }
+  }, [google]);
+
+  const createMarkers = useCallback(
+    (places) => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+
+      const newMarkers = places.map((place) => {
+        const marker = new google.maps.Marker({
+          position: getPosition(place),
+          title: place.name,
+          icon: foodMarker,
+        });
+
+        marker.place = place;
+        setTimeout(() => {
+          marker.setMap(map);
+        }, 2000);
+        return marker;
+      });
+
+      return setMarkers(newMarkers);
+    },
+    [getPosition, google, map, foodMarker]
+  );
 
   const checkIfInRange = useCallback(
     (places, radius) => {
@@ -85,6 +112,7 @@ const MapProvider = ({ children }) => {
   const searchByText = useCallback(
     (query, radius) => {
       setIsLoading(true);
+      markers.forEach((marker) => marker.setMap(null));
       map.panTo(userPosition);
       setRange(radius * 100);
       const service = new google.maps.places.PlacesService(map);
@@ -100,14 +128,13 @@ const MapProvider = ({ children }) => {
             checkIfInRange(response, radius * 100);
             setNextPage(pagination);
           } else {
-            console.log(pagination);
             setNextPage(null);
             checkIfInRange(response, radius * 100);
           }
         }
       });
     },
-    [google, map, userPosition, checkIfInRange]
+    [google, map, userPosition, checkIfInRange, markers]
   );
 
   return (
