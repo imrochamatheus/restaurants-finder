@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import { useEffect } from "react";
 import { useMap } from "../../Providers/MapProvider";
 import { useDirections } from "../../Providers/DirectionsProvider";
+import userIcon from "../../assets/img/here-icon.png";
 
 import foodImage from "../../assets/img/food-icon.png";
 import { usePlaces } from "../../Providers/PlacesProvider";
@@ -19,9 +20,10 @@ import { useMarkers } from "../../Providers/MarkersProvider";
 import ClearRouteButton from "../ClearRouteButton";
 
 const MapContainer = (props) => {
-  const { range, markers, setGoogle, searchByNear, userPosition } = useMap();
+  const { range, markers, setGoogle, searchByNear, userPosition, google } =
+    useMap();
   const { route, setDestiny } = useDirections();
-  const { foodMarker, userMarker } = useMarkers();
+  const { foodMarker } = useMarkers();
 
   const {
     clickedMarker,
@@ -55,14 +57,24 @@ const MapContainer = (props) => {
       center={userPosition}
       centerAroundCurrentLocation
       containerStyle={{
-        height: "93.2vh",
+        height: "100vh",
       }}
     >
-      <Marker
-        position={userPosition}
-        icon={userMarker}
-        animation={window.google.maps.Animation.BOUNCE}
-      />
+      {google && (
+        <Marker
+          position={userPosition}
+          icon={
+            new google.maps.MarkerImage(
+              userIcon,
+              null,
+              null,
+              null,
+              new google.maps.Size(80, 80)
+            )
+          }
+          animation={window.google.maps.Animation.BOUNCE}
+        />
+      )}
 
       {markers &&
         markers.map((marker, i) => (
@@ -75,7 +87,7 @@ const MapContainer = (props) => {
             onClick={handleMarkerClick}
           />
         ))}
-      {/* <ClearRouteButton /> */}
+      <ClearRouteButton open={props.open} />
       {userPosition && (
         <Circle
           radius={range}

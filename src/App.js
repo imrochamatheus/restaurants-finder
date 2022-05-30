@@ -48,9 +48,6 @@ function App() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -96,8 +93,8 @@ function App() {
       </Drawer>
 
       <Main open={open}>
-        <DrawerHeader />
-        <Map />
+        {/* <DrawerHeader /> */}
+        <Map open={open} />
       </Main>
     </Box>
   );

@@ -4,7 +4,7 @@ import { useDirections } from "../../Providers/DirectionsProvider";
 import { CustomButton } from "./styles";
 import { Tooltip } from "@mui/material";
 
-function ClearRouteButton({ panTo }) {
+function ClearRouteButton({ panTo, open }) {
   const { recenter } = useMap();
   const { clearRoute } = useDirections();
 
@@ -15,7 +15,7 @@ function ClearRouteButton({ panTo }) {
 
   return (
     <Tooltip title="Limpar rota">
-      <CustomButton onClick={handleClick}>
+      <CustomButton onClick={handleClick} open={open}>
         <img src="/compass.svg" alt="compass" />
       </CustomButton>
     </Tooltip>
