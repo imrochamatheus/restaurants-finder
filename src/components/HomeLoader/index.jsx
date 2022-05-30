@@ -12,7 +12,7 @@ const HomeLoader = ({ height, width }) => {
   };
 
   return (
-    <div style={{ marginTop: "50%" }}>
+    <div style={{ marginTop: "25%" }}>
       <Lottie
         options={defaultOptions}
         height={height}

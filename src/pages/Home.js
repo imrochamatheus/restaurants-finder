@@ -111,7 +111,7 @@ const Home = () => {
                   src={noResults}
                   alt="no results"
                   width={150}
-                  style={{ alignSelf: "center", marginTop: "50%" }}
+                  style={{ alignSelf: "center", marginTop: "25%" }}
                 />
                 <Typography variant="h6">
                   Nenhum restaurante encontrado...
