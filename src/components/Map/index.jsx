@@ -57,7 +57,7 @@ const MapContainer = (props) => {
       center={userPosition}
       centerAroundCurrentLocation
       containerStyle={{
-        height: "100vh",
+        height: "93.2vh",
       }}
     >
       {google && (

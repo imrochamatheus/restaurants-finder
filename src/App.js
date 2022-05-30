@@ -91,9 +91,8 @@ function App() {
         <Divider />
         <Home />
       </Drawer>
-
       <Main open={open}>
-        {/* <DrawerHeader /> */}
+        <DrawerHeader />
         <Map open={open} />
       </Main>
     </Box>
