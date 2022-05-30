@@ -7,7 +7,7 @@ export const Main = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   flexGrow: 1,
-  paddingTop: theme.spacing(0),
+  // padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -18,8 +18,12 @@ export const Main = styled("main", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
-    display: "flex",
+    width: `calc(100% - ${drawerWidth}px)`,
+    boxSizing: "border-box",
+    height: "auto",
+    position: "relative",
+    marginLeft: 0,
+    dispplay: "flex",
   }),
 }));
 

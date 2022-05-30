@@ -16,9 +16,6 @@ import foodImage from "../../assets/img/food-icon.png";
 import { usePlaces } from "../../Providers/PlacesProvider";
 import { useMarkers } from "../../Providers/MarkersProvider";
 
-import { drawerWidth } from "../../styles";
-import { MapBox } from "./styles";
-
 import ClearRouteButton from "../ClearRouteButton";
 
 const MapContainer = (props) => {
@@ -35,8 +32,6 @@ const MapContainer = (props) => {
     setSelected,
   } = usePlaces();
 
-  const { open } = props;
-
   useEffect(() => {
     setGoogle(props.google);
   }, [setGoogle, props.google]);
@@ -52,7 +47,6 @@ const MapContainer = (props) => {
   );
 
   return (
-    // <MapBox open={open} position="relative !important">
     <Map
       zoom={16}
       google={props.google}
@@ -61,11 +55,7 @@ const MapContainer = (props) => {
       center={userPosition}
       centerAroundCurrentLocation
       containerStyle={{
-        // width: open ? `calc(100vw - ${drawerWidth}px)` : "100vw",
-        width: "100%",
-        // marginLeft: drawerWidth,
-        marginLeft: open ? `${drawerWidth}px` : drawerWidth,
-        height: "100vh",
+        height: "93.2vh",
       }}
     >
       <Marker
@@ -85,7 +75,7 @@ const MapContainer = (props) => {
             onClick={handleMarkerClick}
           />
         ))}
-      <ClearRouteButton />
+      {/* <ClearRouteButton /> */}
       {userPosition && (
         <Circle
           radius={range}
@@ -140,7 +130,6 @@ const MapContainer = (props) => {
         />
       )}
     </Map>
-    // </MapBox>
   );
 };
 

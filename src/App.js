@@ -48,11 +48,14 @@ function App() {
           >
             <MenuIcon />
           </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Persistent drawer
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
         sx={{
-          // width: drawerWidth,
+          width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
@@ -91,8 +94,10 @@ function App() {
         <Divider />
         <Home />
       </Drawer>
-      <Main open={open} position="relative">
-        <Map open={open} />
+
+      <Main open={open}>
+        <DrawerHeader />
+        <Map />
       </Main>
     </Box>
   );
