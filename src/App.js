@@ -52,7 +52,7 @@ function App() {
       </AppBar>
       <Drawer
         sx={{
-          width: drawerWidth,
+          // width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,

@@ -52,92 +52,95 @@ const MapContainer = (props) => {
   );
 
   return (
-    <MapBox open={open} position="relative !important">
-      <Map
-        zoom={16}
-        google={props.google}
-        onReady={searchByNear}
-        onRecenter={searchByNear}
-        center={userPosition}
-        centerAroundCurrentLocation
-        containerStyle={{
-          width: open ? `calc(100vw - ${drawerWidth}px)` : "100vw",
-          height: "100vh",
-        }}
-      >
-        <Marker
-          position={userPosition}
-          icon={userMarker}
-          animation={window.google.maps.Animation.BOUNCE}
-        />
+    // <MapBox open={open} position="relative !important">
+    <Map
+      zoom={16}
+      google={props.google}
+      onReady={searchByNear}
+      onRecenter={searchByNear}
+      center={userPosition}
+      centerAroundCurrentLocation
+      containerStyle={{
+        // width: open ? `calc(100vw - ${drawerWidth}px)` : "100vw",
+        width: "100%",
+        // marginLeft: drawerWidth,
+        marginLeft: open ? `${drawerWidth}px` : drawerWidth,
+        height: "100vh",
+      }}
+    >
+      <Marker
+        position={userPosition}
+        icon={userMarker}
+        animation={window.google.maps.Animation.BOUNCE}
+      />
 
-        {markers &&
-          markers.map((marker, i) => (
-            <Marker
-              key={i}
-              icon={foodMarker}
-              title={marker.name}
-              infos={marker}
-              position={marker.position}
-              onClick={handleMarkerClick}
-            />
-          ))}
-        <ClearRouteButton />
-        {userPosition && (
-          <Circle
-            radius={range}
-            center={userPosition}
-            strokeColor="transparent"
-            strokeOpacity={0}
-            strokeWeight={5}
-            fillColor="green"
-            fillOpacity={0.05}
+      {markers &&
+        markers.map((marker, i) => (
+          <Marker
+            key={i}
+            icon={foodMarker}
+            title={marker.name}
+            infos={marker}
+            position={marker.position}
+            onClick={handleMarkerClick}
           />
-        )}
+        ))}
+      <ClearRouteButton />
+      {userPosition && (
+        <Circle
+          radius={range}
+          center={userPosition}
+          strokeColor="transparent"
+          strokeOpacity={0}
+          strokeWeight={5}
+          fillColor="green"
+          fillOpacity={0.05}
+        />
+      )}
 
-        <InfoWindow
-          visible={selected}
-          marker={clickedMarker}
-          onClose={() => {
-            setSelected(false);
+      <InfoWindow
+        visible={selected}
+        marker={clickedMarker}
+        onClose={() => {
+          setSelected(false);
+        }}
+        style={{ background: "blue" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
           }}
-          style={{ background: "blue" }}
         >
+          <img src={foodImage} alt="food icon" width="100px" height="100px" />
           <div
             style={{
               display: "flex",
-              alignItems: "center",
+              flexDirection: "column",
+              gap: "10px",
             }}
           >
-            <img src={foodImage} alt="food icon" width="100px" height="100px" />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <h2 style={{ fontSize: "16px" }}>{currentPlace?.name}</h2>
-              <p style={{ fontSize: "12px" }}>
-                {currentPlace?.vicinity || currentPlace?.formatted_address}
-              </p>
-            </div>
+            <h2 style={{ fontSize: "16px" }}>{currentPlace?.name}</h2>
+            <p style={{ fontSize: "12px" }}>
+              {currentPlace?.vicinity || currentPlace?.formatted_address}
+            </p>
           </div>
-        </InfoWindow>
+        </div>
+      </InfoWindow>
 
-        {route && (
-          <Polyline
-            path={route}
-            geodesic={false}
-            options={{
-              strokeColor: "blue",
-              strokeOpacity: 0.5,
-              strokeWeight: 3,
-            }}
-          />
-        )}
-      </Map>
-    </MapBox>
+      {route && (
+        <Polyline
+          path={route}
+          geodesic={false}
+          options={{
+            strokeColor: "blue",
+            strokeOpacity: 0.5,
+            strokeWeight: 3,
+          }}
+        />
+      )}
+    </Map>
+    // </MapBox>
   );
 };
 
