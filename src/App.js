@@ -37,6 +37,7 @@ function App() {
           sx={{
             backgroundImage: `url(${background})`,
             backgroundSize: "auto",
+            height: "5vh",
           }}
         >
           <IconButton
