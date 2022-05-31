@@ -68,7 +68,6 @@ const Home = () => {
             fullWidth
             variant="outlined"
             focused={false}
-            required
             value={inputValue}
             label="Escolha um tipo de comida..."
             onChange={({ target }) => setInputValue(target.value)}
