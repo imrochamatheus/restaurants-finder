@@ -90,6 +90,7 @@ const MapProvider = ({ children }) => {
 
   const searchByNear = useCallback(
     (_, map) => {
+      markers.forEach((marker) => marker.setMap(null));
       map.panTo(userPosition);
       setIsLoading(true);
       const service = new google.maps.places.PlacesService(map);
@@ -106,7 +107,7 @@ const MapProvider = ({ children }) => {
       });
       setMap(map);
     },
-    [google, createMarkers, range, userPosition]
+    [google, createMarkers, range, userPosition, markers]
   );
 
   const searchByText = useCallback(

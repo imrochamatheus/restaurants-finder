@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
 
 import { useMap } from "../Providers/MapProvider";
 import { usePlaces } from "../Providers/PlacesProvider";
@@ -49,7 +49,7 @@ const Home = () => {
 
   const { places } = usePlaces();
   const { clearRoute } = useDirections();
-  const { searchByText, isLoading, nextPage, setIsLoading } = useMap();
+  const { searchByText, isLoading } = useMap();
 
   const searchPlaces = () => {
     clearRoute();
@@ -68,6 +68,7 @@ const Home = () => {
             fullWidth
             variant="outlined"
             focused={false}
+            required
             value={inputValue}
             label="Escolha um tipo de comida..."
             onChange={({ target }) => setInputValue(target.value)}
@@ -119,7 +120,7 @@ const Home = () => {
               </>
             )}
           </PlacesContainer>
-          {nextPage && places.length ? (
+          {/* {nextPage && places.length ? (
             <Button
               fullWidth
               onClick={() => {
@@ -132,7 +133,7 @@ const Home = () => {
             </Button>
           ) : (
             ""
-          )}
+          )} */}
         </>
       ) : (
         <HomeLoader width={150} height={150} />
